@@ -1,0 +1,4474 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <title>Project/Dissertation assessment Management Portal</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body { 
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; 
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      color: #2c3e50;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    
+    .container {
+      max-width: 1400px;
+      margin: 40px auto;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 12px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+    
+    .header {
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+      color: white;
+      padding: 32px 40px;
+      text-align: center;
+    }
+    
+    .header h1 {
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      letter-spacing: -0.02em;
+    }
+    
+    .header p {
+      opacity: 0.9;
+      font-size: 16px;
+      font-weight: 400;
+    }
+    
+    .content {
+      padding: 40px;
+    }
+    
+    h2 { 
+      color: #1e3c72;
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 24px;
+      letter-spacing: -0.01em;
+    }
+    
+    h3 {
+      color: #34495e;
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+    
+    table { 
+      border-collapse: collapse; 
+      width: 100%; 
+      margin-bottom: 32px;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+    
+    th, td { 
+      padding: 16px 20px; 
+      text-align: left;
+      border-bottom: 1px solid #e9ecef;
+      vertical-align: top;
+    }
+    
+    th:nth-child(4), td:nth-child(4) {
+      max-width: 250px;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+    
+    th { 
+      background: #f8f9fa;
+      color: #495057;
+      font-weight: 600;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 2px solid #dee2e6;
+    }
+    
+    tbody tr:hover {
+      background-color: #f8f9fa;
+    }
+    
+    .status-verified { 
+      background-color: #e8f5e8; 
+    }
+    
+    .status-unlocked { 
+      background-color: #fff3cd;
+      border-left: 4px solid #ffc107;
+    }
+    
+    .status-modified {
+      background-color: #e3f2fd;
+      border-left: 4px solid #2196f3;
+    }
+    
+    .status-pending-request {
+      background-color: #f3e5f5;
+      border-left: 4px solid #9c27b0;
+      position: relative;
+    }
+    
+    .status-pending-request::before {
+      content: "📋";
+      position: absolute;
+      left: -15px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: #9c27b0;
+      color: white;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      animation: pulse-pending 2s ease-in-out infinite;
+    }
+    
+    @keyframes pulse-pending {
+      0% { 
+        box-shadow: 0 0 5px rgba(156, 39, 176, 0.5);
+        transform: translateY(-50%) scale(1);
+      }
+      50% { 
+        box-shadow: 0 0 15px rgba(156, 39, 176, 0.8);
+        transform: translateY(-50%) scale(1.02);
+      }
+      100% { 
+        box-shadow: 0 0 5px rgba(156, 39, 176, 0.5);
+        transform: translateY(-50%) scale(1);
+      }
+    }
+    
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: all 0.3s ease;
+    }
+    
+    .status-verified-badge {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    
+    .status-unlocked-badge {
+      background-color: #fff3cd;
+      color: #856404;
+      border: 1px solid #ffeaa7;
+    }
+    
+    .status-pending-badge {
+      background-color: #e2e6ea;
+      color: #6c757d;
+      border: 1px solid #dee2e6;
+    }
+    
+    .status-modified-badge {
+      background-color: #cce7ff;
+      color: #004085;
+      border: 1px solid #b8daff;
+    }
+    
+    .status-empty-badge {
+      background-color: #fff3cd;
+      color: #856404;
+      border: 1px solid #ffeaa7;
+      animation: glow 2s ease-in-out infinite;
+    }
+    
+    .status-saving-badge {
+      background-color: #e2e6ea;
+      color: #495057;
+      border: 1px solid #dee2e6;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+    
+    .status-saved-badge {
+      background-color: #d1ecf1;
+      color: #0c5460;
+      border: 1px solid #bee5eb;
+      animation: success-glow 0.5s ease-in-out;
+    }
+    
+    .status-requested-badge {
+      background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
+      color: #4a148c;
+      border: 2px solid #9c27b0;
+      font-weight: 600;
+      animation: pulse-purple 2s ease-in-out infinite;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .status-requested-badge::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+      animation: shimmer 3s ease-in-out infinite;
+    }
+    
+    @keyframes shimmer {
+      0% { left: -100%; }
+      50% { left: 100%; }
+      100% { left: 100%; }
+    }
+    
+    @keyframes pulse {
+      0% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.7; transform: scale(1.02); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    
+    @keyframes pulse-purple {
+      0% { 
+        box-shadow: 0 0 5px rgba(156, 39, 176, 0.5);
+        border-color: #9c27b0;
+      }
+      50% { 
+        box-shadow: 0 0 15px rgba(156, 39, 176, 0.8);
+        border-color: #7b1fa2;
+        transform: scale(1.02);
+      }
+      100% { 
+        box-shadow: 0 0 5px rgba(156, 39, 176, 0.5);
+        border-color: #9c27b0;
+        transform: scale(1);
+      }
+    }
+    
+    @keyframes glow {
+      0% { box-shadow: 0 0 5px rgba(255, 193, 7, 0.5); }
+      50% { box-shadow: 0 0 15px rgba(255, 193, 7, 0.8); }
+      100% { box-shadow: 0 0 5px rgba(255, 193, 7, 0.5); }
+    }
+    
+    @keyframes success-glow {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      padding: 10px 18px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      margin: 4px 6px;
+      min-width: 120px;
+      justify-content: center;
+    }
+    
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    .btn:active {
+      transform: translateY(0);
+    }
+    
+    .btn:disabled {
+      background-color: #e9ecef;
+      color: #6c757d;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+      opacity: 0.6;
+    }
+    
+    .btn:disabled.btn-pending {
+      background: linear-gradient(135deg, #9c27b0 0%, #673ab7 100%);
+      color: white;
+      opacity: 0.8;
+      cursor: not-allowed;
+      animation: pulse-pending 2s ease-in-out infinite;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+      color: white;
+    }
+    
+    .btn-success {
+      background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+      color: white;
+    }
+    
+    .btn-secondary {
+      background: #6c757d;
+      color: white;
+    }
+    
+    .btn-warning {
+      background: linear-gradient(135deg, #fd7e14 0%, #ffc107 100%);
+      color: white;
+    }
+    
+    .btn-danger {
+      background: linear-gradient(135deg, #dc3545 0%, #e74c3c 100%);
+      color: white;
+      border: 2px solid transparent;
+    }
+    
+    .btn-danger:hover {
+      background: linear-gradient(135deg, #c82333 0%, #dc3545 100%);
+      border-color: #bd2130;
+    }
+    
+    .btn-info {
+      background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+      color: white;
+    }
+
+    .btn:disabled.already-verified {
+      background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%) !important;
+      color: #155724 !important;
+      border: 2px solid #28a745 !important;
+      opacity: 0.8;
+      cursor: not-allowed;
+    }
+
+    .btn:disabled.already-verified:hover {
+      transform: none !important;
+      box-shadow: none !important;
+      background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%) !important;
+    }
+    
+    .alert {
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      border-radius: 8px;
+      border-left: 4px solid;
+      font-size: 14px;
+    }
+    
+    .alert-success {
+      background-color: #d4edda;
+      border-left-color: #28a745;
+      color: #155724;
+    }
+    
+    .alert-warning {
+      background-color: #fff3cd;
+      border-left-color: #ffc107;
+      color: #856404;
+    }
+    
+    .alert-danger {
+      background-color: #f8d7da;
+      border-left-color: #dc3545;
+      color: #721c24;
+    }
+    
+    .alert-info {
+      background-color: #d1ecf1;
+      border-left-color: #17a2b8;
+      color: #0c5460;
+    }
+    
+    .login-container {
+      max-width: 450px;
+      margin: 80px auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+    
+    .login-header {
+        background: linear-gradient(135deg, #3a5998 0%, #4a6ba8 100%); /* Lighter blues */
+        color: white;
+        padding: 32px 40px;
+        text-align: center;
+        border-radius: 12px;
+        margin-bottom: 20px;
+    }
+    
+    .login-content {
+      padding: 40px;
+    }
+    
+    .form-group {
+      margin-bottom: 24px;
+    }
+    
+    .form-label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: #495057;
+      font-size: 14px;
+    }
+    
+    .form-input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e9ecef;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: all 0.2s ease;
+      background: white;
+    }
+    
+    .form-input:focus {
+      outline: none;
+      border-color: #2a5298;
+      box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.1);
+    }
+    
+    .form-input:disabled {
+      background-color: #f8f9fa;
+      cursor: not-allowed;
+    }
+    
+    .marks-input {
+      width: 100px;
+      padding: 8px 12px;
+      border: 2px solid #495057;
+      border-radius: 4px;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 500;
+      background-color: #f8f9fa;
+      color: #212529;
+      transition: all 0.2s ease;
+    }
+
+    .marks-input:focus {
+      outline: none;
+      border-color: #2a5298;
+      background-color: #ffffff;
+      box-shadow: 0 0 0 2px rgba(42, 82, 152, 0.1);
+    }
+    
+    .marks-input.modified {
+      border-color: #ffc107;
+      background-color: #fffbf0;
+    }
+    
+    .marks-input.auto-saved {
+      border-color: #28a745;
+      background-color: #f0fff4;
+    }
+    
+    .marks-input:disabled.pending-disabled {
+      background: linear-gradient(135deg, #f5f5f5 0%, #eeeeee 100%);
+      border: 2px dashed #9c27b0;
+      color: #666;
+      cursor: not-allowed;
+    }
+    
+    .checkbox-column {
+      text-align: center;
+      width: 60px;
+    }
+    
+    .student-checkbox {
+      transform: scale(1.2);
+      accent-color: #2a5298;
+    }
+    
+    .student-checkbox:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      filter: grayscale(100%);
+    }
+    
+    .bulk-actions {
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      border: 2px solid #dee2e6;
+      border-radius: 12px;
+      padding: 32px;
+      margin: 32px 0;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+    
+    .bulk-actions h3 {
+      margin-bottom: 20px;
+      color: #1e3c72;
+      font-size: 20px;
+    }
+    
+    .bulk-actions-row .btn-secondary:nth-child(1) {
+      background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+    }
+
+    .bulk-actions-row .btn-secondary:nth-child(1):hover {
+      background: linear-gradient(135deg, #138496 0%, #117a8b 100%);
+    }
+
+    .bulk-actions-row .btn-secondary:nth-child(2) {
+      background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    }
+
+    .bulk-actions-row .btn-secondary:nth-child(2):hover {
+      background: linear-gradient(135deg, #20c997 0%, #1e7e34 100%);
+    }
+
+    .bulk-actions-row .btn-secondary:nth-child(3) {
+      background: linear-gradient(135deg, #fd7e14 0%, #e07404 100%);
+    }
+
+    .bulk-actions-row .btn-secondary:nth-child(3):hover {
+      background: linear-gradient(135deg, #e07404 0%, #c65d00 100%);
+    }
+    
+    .legend {
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 24px 0;
+      border: 1px solid #dee2e6;
+    }
+    
+    .legend h4 {
+      margin-bottom: 12px;
+      color: #495057;
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      margin-right: 24px;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+    
+    .legend-color {
+      width: 16px;
+      height: 16px;
+      border-radius: 4px;
+      margin-right: 8px;
+      border: 1px solid #dee2e6;
+    }
+    
+    .auto-save-indicator {
+      display: inline-flex;
+      align-items: center;
+      font-size: 12px;
+      color: #28a745;
+      margin-left: 8px;
+    }
+    
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.95);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      backdrop-filter: blur(5px);
+    }
+    
+    .loading-logo {
+      width: 120px;
+      height: 120px;
+      object-fit: contain;
+      animation: pulse-logo 2s ease-in-out infinite;
+      margin-bottom: 20px;
+    }
+    
+    .loading-text {
+      color: #1e3c72;
+      font-size: 18px;
+      font-weight: 600;
+      margin-top: 10px;
+      animation: fade-in-out 2s ease-in-out infinite;
+    }
+    
+    @keyframes pulse-logo {
+      0% { 
+        transform: scale(1);
+        opacity: 0.8;
+      }
+      50% { 
+        transform: scale(1.05);
+        opacity: 1;
+      }
+      100% { 
+        transform: scale(1);
+        opacity: 0.8;
+      }
+    }
+    
+    @keyframes fade-in-out {
+      0% { opacity: 0.6; }
+      50% { opacity: 1; }
+      100% { opacity: 0.6; }
+    }
+    
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid #e9ecef;
+      border-top: 3px solid #2a5298;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      display: none; /* Hide fallback spinner by default */
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .notification-banner {
+      background: linear-gradient(135deg, #17a2b8 0%, #20c997 100%);
+      color: white;
+      padding: 16px 24px;
+      margin-bottom: 24px;
+      border-radius: 8px;
+      display: none;
+      font-weight: 500;
+    }
+    
+    .notification-banner.show {
+      display: block;
+      animation: slideDown 0.3s ease;
+    }
+    
+    .notification-banner.pending-theme {
+      background: linear-gradient(135deg, #9c27b0 0%, #673ab7 100%);
+      border: 2px solid #7b1fa2;
+      color: white;
+      font-weight: 500;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .notification-banner.pending-theme::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      animation: shimmer 4s ease-in-out infinite;
+    }
+    
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid #e9ecef;
+    }
+    
+    .help-text {
+      font-size: 14px;
+      color: #6c757d;
+      margin-top: 8px;
+      line-height: 1.5;
+    }
+    
+    .btn-loading {
+      position: relative;
+      color: transparent !important;
+      pointer-events: none;
+    }
+    
+    .btn-loading::after {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      top: 50%;
+      left: 50%;
+      margin-left: -8px;
+      margin-top: -8px;
+      border: 2px solid transparent;
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    
+    .workflow-highlight {
+      background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+      border: 2px solid #2196f3;
+      border-radius: 12px;
+      padding: 24px;
+      margin: 24px 0;
+    }
+    
+    .workflow-highlight.pending-active {
+      background: linear-gradient(135deg, #f3e5f5 0%, #e8eaf6 100%);
+      border: 2px solid #9c27b0;
+      box-shadow: 0 4px 20px rgba(156, 39, 176, 0.15);
+    }
+    
+    .workflow-highlight h4 {
+      color: #1565c0;
+      margin-bottom: 12px;
+      font-size: 16px;
+    }
+    
+    .workflow-step {
+      display: flex;
+      align-items: center;
+      margin: 8px 0;
+      font-size: 14px;
+    }
+    
+    .workflow-step.pending-step {
+      background: linear-gradient(135deg, #f3e5f5 0%, #fce4ec 100%);
+      border-left: 4px solid #9c27b0;
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin: 8px 0;
+      animation: pulse-subtle 3s ease-in-out infinite;
+    }
+    
+    @keyframes pulse-subtle {
+      0%, 100% { 
+        box-shadow: 0 2px 8px rgba(156, 39, 176, 0.1);
+      }
+      50% { 
+        box-shadow: 0 4px 16px rgba(156, 39, 176, 0.2);
+      }
+    }
+    
+    .workflow-step-number {
+      background: #2196f3;
+      color: white;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 12px;
+      font-weight: bold;
+      font-size: 12px;
+    }
+
+    .examiner-info-card {
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      border: 2px solid #dee2e6;
+      border-radius: 12px;
+      margin: 24px 0;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+    }
+    
+    .examiner-card-header {
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+      color: white;
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .examiner-icon {
+      width: 48px;
+      height: 48px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-right: 16px;
+      backdrop-filter: blur(10px);
+    }
+    
+    .examiner-details {
+      flex: 1;
+    }
+    
+    .examiner-title {
+      font-size: 22px;
+      font-weight: 600;
+      margin: 0 0 8px 0;
+      color: white;
+      letter-spacing: 0.5px;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      line-height: 1.2;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    
+    .examiner-subtitle {
+      font-size: 14px;
+      opacity: 0.9;
+      margin: 0;
+    }
+
+    .paper-code-badge {
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 8px;
+      padding: 16px;
+      backdrop-filter: blur(10px);
+      min-width: 280px;
+    }
+
+    .paper-info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .paper-info-item {
+      min-width: 0;
+    }
+
+    .paper-code-label, .paper-title-label {
+      font-size: 11px;
+      opacity: 0.8;
+      margin-bottom: 2px;
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .paper-code-value, .paper-title-value {
+      font-size: 13px;
+      font-weight: 600;
+      color: white;
+      margin-bottom: 8px;
+      word-break: break-word;
+    }
+
+    .paper-code-value:last-child, .paper-title-value:last-child {
+      margin-bottom: 0;
+    }
+    
+    .examiner-card-body {
+      padding: 24px;
+    }
+    
+    .examiner-info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    
+    .examiner-info-item {
+      background: white;
+      padding: 16px;
+      border-radius: 8px;
+      border: 1px solid #e9ecef;
+      transition: all 0.2s ease;
+    }
+    
+    .examiner-info-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    
+    .info-label {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #6c757d;
+      margin-bottom: 6px;
+    }
+    
+    .info-value {
+      font-size: 16px;
+      font-weight: 500;
+      color: #2c3e50;
+      word-break: break-word;
+    }
+    
+    .info-value.highlight {
+      color: #1e3c72;
+      font-weight: 600;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      backdrop-filter: blur(3px);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+    
+    .modal-overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .modal {
+      background: white;
+      border-radius: 12px;
+      padding: 32px;
+      max-width: 500px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+      transform: translateY(-20px);
+      transition: transform 0.3s ease;
+    }
+    
+    .modal.pending-request-modal {
+      border: 3px solid #9c27b0;
+      box-shadow: 0 20px 40px rgba(156, 39, 176, 0.3);
+    }
+    
+    .modal.pending-request-modal .modal-header {
+      background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
+      border-bottom: 2px solid #9c27b0;
+    }
+    
+    .modal-overlay.show .modal {
+      transform: translateY(0);
+    }
+    
+    .modal-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid #e9ecef;
+    }
+    
+    .modal-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 16px;
+      font-size: 24px;
+      font-weight: bold;
+    }
+    
+    .modal-icon.success {
+      background: #d4edda;
+      color: #155724;
+    }
+    
+    .modal-icon.warning {
+      background: #fff3cd;
+      color: #856404;
+    }
+    
+    .modal-icon.error {
+      background: #f8d7da;
+      color: #721c24;
+    }
+    
+    .modal-icon.info {
+      background: #d1ecf1;
+      color: #0c5460;
+    }
+    
+    .modal-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: #2c3e50;
+      margin: 0;
+    }
+    
+    .modal-body {
+      color: #495057;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+    
+    .modal-footer {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+    }
+
+    .toast-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 10001;
+      max-width: 400px;
+    }
+    
+    .toast {
+      background: white;
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin-bottom: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      border-left: 4px solid;
+      display: flex;
+      align-items: center;
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+      animation: slideInRight 0.3s ease forwards;
+    }
+    
+    @keyframes slideInRight {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+    
+    .toast.success {
+      border-left-color: #28a745;
+    }
+    
+    .toast.error {
+      border-left-color: #dc3545;
+    }
+    
+    .toast.warning {
+      border-left-color: #ffc107;
+    }
+    
+    .toast.info {
+      border-left-color: #17a2b8;
+    }
+    
+    .toast-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 12px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+    
+    .toast.success .toast-icon {
+      background: #28a745;
+      color: white;
+    }
+    
+    .toast.error .toast-icon {
+      background: #dc3545;
+      color: white;
+    }
+    
+    .toast.warning .toast-icon {
+      background: #ffc107;
+      color: white;
+    }
+    
+    .toast.info .toast-icon {
+      background: #17a2b8;
+      color: white;
+    }
+    
+    .toast-content {
+      flex: 1;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+    
+    .toast-title {
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+    
+    .toast-message {
+      color: #666;
+    }
+
+    .confirm-students {
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 16px;
+      margin: 16px 0;
+      border: 1px solid #dee2e6;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    
+    .confirm-students.pending-theme {
+      background: linear-gradient(135deg, #f3e5f5 0%, #fce4ec 100%);
+      border: 2px solid #9c27b0;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    
+    .confirm-student-item {
+      display: flex;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid #e9ecef;
+    }
+    
+    .confirm-student-item.pending-item {
+      border-bottom: 1px solid #ce93d8;
+      padding: 12px 0;
+    }
+    
+    .confirm-student-item:last-child {
+      border-bottom: none;
+    }
+    
+    .confirm-student-number {
+      background: #2196f3;
+      color: white;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: bold;
+      margin-right: 12px;
+    }
+    
+    .confirm-student-number.pending-number {
+      background: linear-gradient(135deg, #9c27b0 0%, #673ab7 100%);
+      color: white;
+      box-shadow: 0 2px 4px rgba(156, 39, 176, 0.3);
+    }
+    
+    .confirm-student-details {
+      flex: 1;
+      font-size: 14px;
+    }
+    
+    .confirm-student-regdno {
+      font-weight: 600;
+      color: #2c3e50;
+    }
+    
+    .confirm-student-name {
+      color: #6c757d;
+      font-size: 13px;
+    }
+
+    /* Enhanced Auto-Logout Countdown Styles */
+    .logout-countdown {
+      background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+      color: white;
+      padding: 16px 24px;
+      border-radius: 8px;
+      margin: 16px 0;
+      text-align: center;
+      border: 2px solid #dc3545;
+      box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+      animation: pulse-logout 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-logout {
+      0% { 
+        box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+        transform: scale(1);
+      }
+      50% { 
+        box-shadow: 0 6px 18px rgba(220, 53, 69, 0.5);
+        transform: scale(1.02);
+      }
+      100% { 
+        box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+        transform: scale(1);
+      }
+    }
+
+    .countdown-number {
+      font-size: 32px;
+      font-weight: bold;
+      margin: 8px 0;
+      color: #fff;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .countdown-text {
+      font-size: 16px;
+      margin: 4px 0;
+      opacity: 0.95;
+    }
+    
+    @media (max-width: 768px) {
+      .container {
+        margin: 20px;
+      }
+      
+      .content {
+        padding: 24px 20px;
+      }
+      
+      .header {
+        padding: 24px 20px;
+      }
+      
+      th, td {
+        padding: 12px 8px;
+        font-size: 14px;
+      }
+      
+      th:nth-child(4), td:nth-child(4) {
+        max-width: 150px;
+        font-size: 12px;
+      }
+      
+      .examiner-info-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+      
+      .examiner-card-header:hover .examiner-title::after {
+          width: 80px;
+        }
+      
+      .paper-code-badge {
+        align-self: flex-end;
+        min-width: auto;
+        width: 100%;
+      }
+
+      .paper-info-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+      
+      .examiner-card-body {
+        padding: 20px;
+      }
+      
+      .examiner-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+        margin-right: 12px;
+      }
+      
+      .examiner-title::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 60px;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.4);
+      border-radius: 2px;
+      transition: width 0.3s ease;
+    }
+      
+      .examiner-subtitle {
+        font-size: 13px;
+      }
+      
+      .btn {
+        padding: 8px 14px;
+        font-size: 12px;
+        margin: 2px 4px;
+        min-width: 100px;
+      }
+      
+      .bulk-actions-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .status-pending-request::before {
+        left: -12px;
+        width: 20px;
+        height: 20px;
+        font-size: 10px;
+      }
+      
+      .status-requested-badge {
+        font-size: 11px;
+        padding: 4px 8px;
+      }
+      
+      .notification-banner.pending-theme {
+        padding: 12px 16px;
+        font-size: 14px;
+      }
+      
+      .workflow-step.pending-step {
+        padding: 8px 12px;
+        font-size: 13px;
+      }
+      
+      .btn:disabled.btn-pending {
+        padding: 6px 12px;
+        font-size: 12px;
+      }
+
+      .countdown-number {
+        font-size: 24px;
+      }
+
+      .countdown-text {
+        font-size: 14px;
+      }
+    }
+
+    /* High contrast mode support */
+    @media (prefers-contrast: high) {
+      .status-pending-request {
+        background: #fff;
+        border-left: 6px solid #9c27b0;
+      }
+      
+      .status-requested-badge {
+        background: #fff;
+        color: #000;
+        border: 3px solid #9c27b0;
+      }
+      
+      .btn:disabled.btn-pending {
+        background: #9c27b0;
+        color: #fff;
+        border: 2px solid #000;
+      }
+    }
+
+    /* Accessibility for reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      .status-requested-badge,
+      .btn:disabled.btn-pending,
+      .status-pending-request::before,
+      .workflow-step.pending-step,
+      .logout-countdown {
+        animation: none;
+      }
+      
+      .status-requested-badge::before {
+        animation: none;
+      }
+      
+      .notification-banner.pending-theme::before {
+        animation: none;
+      }
+    }
+
+    /* Enhanced University Logo Styles for Login Page */
+    .university-logo-container {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .university-login-logo {
+      max-width: 120px;
+      height: auto;
+      margin: 0 auto 20px auto;
+      display: block;
+      background: none !important;
+      padding: 0 !important;
+      border-radius: 0;
+      transition: all 0.3s ease;
+      
+      /* Clean enhancement */
+      filter: brightness(1.3) contrast(1.2) saturate(1.1) drop-shadow(0 0 10px rgba(255, 255, 255, 0.4)) drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+    }
+
+    .university-login-logo:hover {
+      transform: scale(1.05);
+      filter: brightness(1.4) contrast(1.3) saturate(1.2) drop-shadow(0 0 15px rgba(255, 255, 255, 0.6)) drop-shadow(0 6px 12px rgba(0, 0, 0, 0.3));
+    }
+
+.logo-fallback {
+  display: inline-block;
+  margin-bottom: 20px;
+}
+
+.logo-placeholder {
+  width: 100px;
+  height: 100px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+}
+
+.university-info {
+  text-align: center;
+  margin-bottom: 30px;
+  padding: 0 20px;
+}
+
+.university-name {
+  font-size: 22px;
+  font-weight: 700;
+  color: white;
+  margin: 0 0 8px 0;
+  line-height: 1.2;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  letter-spacing: 0.5px;
+}
+
+.university-subtitle {
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.95);
+  margin: 0 0 6px 0;
+  font-weight: 400;
+  font-style: italic;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+.university-location {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0 0 20px 0;
+  font-weight: 300;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  letter-spacing: 0.3px;
+}
+
+.portal-login-title {
+  color: white;
+  margin: 20px 0 8px 0;
+  font-size: 26px;
+  font-weight: 600;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+}
+
+.login-subtitle {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+  font-weight: 400;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  letter-spacing: 0.2px;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .university-login-logo {
+    max-width: 100px;
+  }
+  
+  .university-info {
+    padding: 0 15px;
+  }
+  
+  .university-name {
+    font-size: 18px;
+    line-height: 1.3;
+  }
+  
+  .university-subtitle {
+    font-size: 13px;
+  }
+  
+  .university-location {
+    font-size: 12px;
+  }
+  
+  .portal-login-title {
+    font-size: 22px;
+  }
+  
+  .login-subtitle {
+    font-size: 14px;
+  }
+}
+
+.portal-login-title {
+  color: white;
+  margin: 20px 0 8px 0;
+  font-size: 26px;
+  font-weight: 600;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+}
+
+.login-subtitle {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+  font-weight: 400;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  letter-spacing: 0.2px;
+}
+
+/* Enhanced mobile responsiveness */
+@media (max-width: 768px) {
+  .university-login-logo {
+    max-width: 100px;
+  }
+  
+  .university-info {
+    padding: 0 15px;
+  }
+  
+  .university-name {
+    font-size: 18px;
+    line-height: 1.3;
+  }
+  
+  .university-subtitle {
+    font-size: 13px;
+  }
+  
+  .university-location {
+    font-size: 12px;
+  }
+  
+  .portal-login-title {
+    font-size: 22px;
+  }
+  
+  .login-subtitle {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .university-login-logo {
+    max-width: 80px;
+  }
+  
+  .university-name {
+    font-size: 16px;
+  }
+  
+  .portal-login-title {
+    font-size: 20px;
+  }
+}
+  </style>
+</head>
+<body>
+  <!-- Toast container -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  
+    
+    <div class="content">
+      <div id="login" class="login-container">
+        <!-- Enhanced Login Header -->
+        <div class="login-header">
+          <!-- University Logo -->
+          <div class="university-logo-container">
+            <img src="https://www.sssihl.edu.in/wp-content/uploads/2020/11/cropped-SSSIHL-Logo_Site_Title-150x150.png" 
+                alt="SSSIHL Logo" 
+                class="university-login-logo" 
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                onload="this.style.display='block'; this.nextElementSibling.style.display='none';">
+            <!-- Fallback logo if main one fails -->
+            <div class="logo-fallback" style="display: none;">
+              <div class="logo-placeholder">
+                <span style="font-size: 24px; font-weight: bold;">SSSIHL</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- University Info -->
+          <div class="university-info">
+            <h2 class="university-name">Sri Sathya Sai Institute of Higher Learning</h2>
+            <p class="university-subtitle">(Deemed to be University)</p>
+            <p class="university-location">Prasanthi Nilayam, Andhra Pradesh</p>
+          </div>
+          
+          <!-- Portal Title -->
+          <h1 class="portal-login-title">Project / Dissertation Assessment System</h1>
+          <p class="login-subtitle">Faculty Login</p>
+        </div>
+        
+        <div class="login-content">
+          <div class="form-group">
+            <label class="form-label" for="email">Institute Email Address</label>
+            <input type="email" id="email" class="form-input" placeholder="Enter your institutional email" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="otp">One-Time Password</label>
+            <input type="text" id="otp" class="form-input" placeholder="Enter 6-digit OTP" required maxlength="6">
+            <div class="help-text">Check your email for the authentication code. Contact Examinations Section if not received.</div>
+          </div>
+          <button onclick="login()" class="btn btn-primary" style="width: 100%; padding: 12px;">Access Portal</button>
+        </div>
+      </div>
+            
+      <div id="students-container" style="display:none;">
+        <div class="section-header">
+          <div>
+            <button onclick="refreshData()" class="btn btn-secondary">Refresh Data</button>
+            <button onclick="logout()" class="btn btn-danger">Logout</button>
+          </div>
+        </div>
+        
+        <div class="notification-banner" id="unlock-notification">
+          <strong>Edit Access Granted:</strong> You have unlocked students available for editing. Please review the highlighted entries below.
+        </div>
+        
+        <div class="workflow-highlight">
+          <h4>System Workflow:</h4>
+          <div class="workflow-step">
+            <div class="workflow-step-number">1</div>
+            Review student and paper code details 
+          </div>
+          <div class="workflow-step">
+            <div class="workflow-step-number">2</div>
+            Enter marks - see status as per Legend given below
+          </div>
+          <div class="workflow-step">
+            <div class="workflow-step-number">3</div>
+            Select students using checkboxes for operations
+          </div>
+          <div class="workflow-step">
+            <div class="workflow-step-number">4</div>
+            Use "Verify" to lock finalized marks
+          </div>
+          <div class="workflow-step">
+            <div class="workflow-step-number">5</div>
+            Use "Request Edit Access" for verified marks if changes needed
+          </div>
+        </div>
+        
+        <div class="legend">
+          <h4>Status Legend</h4>
+          <div class="legend-item">
+            <span class="legend-color" style="background-color: #fff3cd; animation: glow 2s infinite;"></span>
+              Enter Marks
+          </div>
+          <div class="legend-item">
+            <span class="legend-color" style="background-color: #e2e6ea; animation: pulse 1.5s infinite;"></span>
+            Marks getting saved
+          </div>
+          <div class="legend-item">
+            <span class="legend-color" style="background-color: #d1ecf1;"></span>
+            Marks saved, Please verify
+          </div>
+          <div class="legend-item">
+            <span class="legend-color" style="background-color: #d4edda;"></span>
+            Verified & Locked
+          </div>
+          <div class="legend-item">
+            <span class="legend-color" style="background-color: #fff3cd;"></span>
+            Unlocked for Editing
+          </div>
+          <div class="legend-item">
+            <span class="legend-color" style="background-color: #f3e5f5; animation: pulse-purple 2s infinite;"></span>
+            Edit Access Requested
+          </div>
+        </div>
+        
+        <div id="status-message" class="alert alert-info">
+        </div>
+        
+        <div class="examiner-info-card" id="examinerInfoCard" style="display: none;">
+          <div class="examiner-card-header">
+            <div class="examiner-details">
+              <h3 class="examiner-title">Assessment Information</h3>
+            </div>
+            <div class="paper-code-badge" id="paperCodeBadge" style="display: none;">
+              <div class="paper-info-grid" id="paperInfoGrid">
+                <!-- Dynamic content will be populated here -->
+              </div>
+            </div>
+          </div>
+          <div class="examiner-card-body">
+            <div class="examiner-info-grid">
+              <div class="examiner-info-item">
+                <div class="info-label">Examiner Name</div>
+                <div class="info-value" id="examinerName">Loading...</div>
+              </div>
+              <div class="examiner-info-item">
+                <div class="info-label">Email Address</div>
+                <div class="info-value" id="examinerEmail">Loading...</div>
+              </div>
+              <div class="examiner-info-item">
+                <div class="info-label">Students Assigned</div>
+                <div class="info-value" id="studentsCount">Loading...</div>
+              </div>
+              <div class="examiner-info-item">
+                <div class="info-label">Last Updated</div>
+                <div class="info-value" id="lastUpdated">Just now</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <table id="studentTable">
+          <thead>
+            <tr>
+              <th class="checkbox-column">Select</th>
+              <th>Registered Number</th>
+              <th>Student Name</th>
+              <th>Marks</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="studentTableBody"></tbody>
+        </table>
+        
+        <div class="bulk-actions">
+          <h3>Operations</h3>
+          <div class="bulk-actions-row">
+            <button onclick="bulkVerifySelected()" class="btn btn-success" id="bulkVerifyBtn" disabled>
+              ✅ Verify
+            </button>
+            <button onclick="requestEditForSelected()" class="btn btn-warning" id="editRequestBtn" disabled>
+              📝 Request Edit Access
+            </button>
+          </div>
+          <div class="bulk-actions-row">
+            <button onclick="selectAllWithMarks()" class="btn btn-secondary">
+              📋 Select All
+            </button>
+            <button onclick="selectAllVerified()" class="btn btn-secondary">
+              ✅ Select all for edit
+            </button>
+            <button onclick="clearSelection()" class="btn btn-secondary">
+              🔄 Clear Selection
+            </button>
+          </div>
+         
+        
+      </div>
+         <div class="help-text">
+            <strong>Dynamic Status:</strong> Watch the status column change in real-time as you enter marks:<br>
+            1. Empty fields glow and prompt <b>"Enter Marks"</b><br>
+            2. Active saving shows pulsing <b>"Marks getting saved"</b><br>
+            3. Completed entries show <b>"Marks saved, Please verify"</b><br>
+            4. Edit requests show <b>"Edit Access Requested"</b> with purple animation
+          </div>
+    </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-icon" id="modalIcon">
+          <span id="modalIconText">!</span>
+        </div>
+        <h3 class="modal-title" id="modalTitle">Confirmation</h3>
+      </div>
+      <div class="modal-body" id="modalBody">
+        Are you sure you want to proceed?
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-primary" id="modalConfirmBtn" onclick="confirmAction()">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ===== ENHANCED SESSION MANAGEMENT =====
+    class EnhancedSessionManager {
+      constructor() {
+        this.currentStudents = [];
+        this.currentEmail = '';
+        this.loadingOverlay = null;
+        this.modifiedStudents = new Set();
+        this.autoSaveTimeouts = new Map();
+        this.savingStates = new Map();
+        this.modalCallback = null;
+        this.sessionValid = false;
+        this.confirmedPendingRequests = new Set();
+        this.pendingRequestTracker = null;
+      }
+
+      setEmail(email) {
+        if (!email || typeof email !== 'string' || email.trim() === '') {
+          console.error('SessionManager: Invalid email provided:', email);
+          return false;
+        }
+        
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email.trim())) {
+          console.error('SessionManager: Invalid email format:', email);
+          return false;
+        }
+        
+        this.currentEmail = email.trim();
+        this.sessionValid = true;
+        console.log('SessionManager: Email set successfully:', this.currentEmail);
+        return true;
+      }
+
+      getEmail() {
+        if (!this.sessionValid || !this.currentEmail || this.currentEmail.trim() === '') {
+          console.error('SessionManager: No valid email available');
+          return null;
+        }
+        return this.currentEmail;
+      }
+
+      reset() {
+        console.log('SessionManager: Resetting session...');
+        this.currentStudents = [];
+        this.currentEmail = '';
+        this.modifiedStudents.clear();
+        this.savingStates.clear();
+        this.sessionValid = false;
+        this.modalCallback = null;
+        this.confirmedPendingRequests.clear();
+        this.pendingRequestTracker = null;
+        
+        this.autoSaveTimeouts.forEach(timeout => clearTimeout(timeout));
+        this.autoSaveTimeouts.clear();
+        
+        console.log('SessionManager: Session reset complete');
+      }
+
+      isValid() {
+        return this.sessionValid && this.currentEmail && this.currentEmail.trim() !== '';
+      }
+      
+      addPendingRequest(regdNo) {
+        this.confirmedPendingRequests.add(regdNo);
+        console.log(`SessionManager: Added pending request for ${regdNo}`);
+      }
+      
+      removePendingRequest(regdNo) {
+        this.confirmedPendingRequests.delete(regdNo);
+        console.log(`SessionManager: Removed pending request for ${regdNo}`);
+      }
+      
+      hasPendingRequest(regdNo) {
+        return this.confirmedPendingRequests.has(regdNo);
+      }
+      
+      getPendingRequestsCount() {
+        return this.confirmedPendingRequests.size;
+      }
+
+      debug() {
+        console.log('=== SessionManager Debug ===');
+        console.log('Current Email:', this.currentEmail);
+        console.log('Session Valid:', this.sessionValid);
+        console.log('Students Count:', this.currentStudents.length);
+        console.log('Modified Count:', this.modifiedStudents.size);
+        console.log('Saving Count:', this.savingStates.size);
+        console.log('Timeouts Count:', this.autoSaveTimeouts.size);
+        console.log('Confirmed Pending Count:', this.confirmedPendingRequests.size);
+        console.log('=== End Debug ===');
+        return {
+          email: this.currentEmail,
+          valid: this.sessionValid,
+          studentsCount: this.currentStudents.length,
+          modifiedCount: this.modifiedStudents.size,
+          savingCount: this.savingStates.size,
+          confirmedPendingCount: this.confirmedPendingRequests.size,
+          pendingRequests: Array.from(this.confirmedPendingRequests),
+          hasTracker: !!this.pendingRequestTracker
+        };
+      }
+    }
+
+    // Create global enhanced session manager
+    const session = new EnhancedSessionManager();
+
+    // ===== TOAST NOTIFICATION SYSTEM =====
+    function initializeToastContainer() {
+      if (!document.getElementById('toastContainer')) {
+        const toastContainer = document.createElement('div');
+        toastContainer.id = 'toastContainer';
+        toastContainer.className = 'toast-container';
+        document.body.appendChild(toastContainer);
+      }
+    }
+
+    function showToast(title, message, type = 'info', duration = 5000) {
+      initializeToastContainer();
+      const toastContainer = document.getElementById('toastContainer');
+      
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      
+      const icon = type === 'success' ? '✓' : 
+                   type === 'error' ? '✕' : 
+                   type === 'warning' ? '!' : 'i';
+      
+      toast.innerHTML = `
+        <div class="toast-icon">${icon}</div>
+        <div class="toast-content">
+          <div class="toast-title">${title}</div>
+          <div class="toast-message">${message}</div>
+        </div>
+      `;
+      
+      toastContainer.appendChild(toast);
+      
+      setTimeout(() => {
+        toast.style.animation = 'slideInRight 0.3s ease reverse';
+        setTimeout(() => {
+          if (toastContainer.contains(toast)) {
+            toastContainer.removeChild(toast);
+          }
+        }, 300);
+      }, duration);
+    }
+
+    // ===== MODAL SYSTEM =====
+    function showModal(title, message, type = 'info', confirmText = 'OK', showCancel = false, callback = null) {
+      const modalOverlay = document.getElementById('modalOverlay');
+      const modalTitle = document.getElementById('modalTitle');
+      const modalBody = document.getElementById('modalBody');
+      const modalIcon = document.getElementById('modalIcon');
+      const modalIconText = document.getElementById('modalIconText');
+      const modalConfirmBtn = document.getElementById('modalConfirmBtn');
+      
+      modalTitle.textContent = title;
+      modalBody.innerHTML = message;
+      modalConfirmBtn.textContent = confirmText;
+      session.modalCallback = callback;
+      
+      modalIcon.className = `modal-icon ${type}`;
+      modalIconText.textContent = type === 'success' ? '✓' : 
+                                   type === 'error' ? '✕' : 
+                                   type === 'warning' ? '!' : 'i';
+      
+      const cancelBtn = modalOverlay.querySelector('.btn-secondary');
+      cancelBtn.style.display = showCancel ? 'inline-flex' : 'none';
+      
+      modalOverlay.classList.add('show');
+    }
+
+    function closeModal() {
+      const modalOverlay = document.getElementById('modalOverlay');
+      modalOverlay.classList.remove('show');
+      session.modalCallback = null;
+    }
+
+    function confirmAction() {
+      if (session.modalCallback) {
+        session.modalCallback();
+      }
+      closeModal();
+    }
+
+    // ===== LOADING OVERLAY WITH UNIVERSITY LOGO =====
+    function showLoading(message = 'Loading...') {
+      if (!session.loadingOverlay) {
+        session.loadingOverlay = document.createElement('div');
+        session.loadingOverlay.className = 'loading-overlay';
+        
+        // Create the loading content
+        session.loadingOverlay.innerHTML = `
+          <img src="https://www.sssihl.edu.in/wp-content/uploads/2020/11/cropped-SSSIHL-Logo_Site_Title-150x150.png" 
+               alt="University Logo" 
+               class="loading-logo" 
+               onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+               onload="this.style.display='block'; this.nextElementSibling.style.display='none';">
+          <div class="spinner"></div>
+          <div class="loading-text">${message}</div>
+        `;
+        
+        document.body.appendChild(session.loadingOverlay);
+        
+        // Try alternative logo sources if main one fails
+        const logoImg = session.loadingOverlay.querySelector('.loading-logo');
+        const spinner = session.loadingOverlay.querySelector('.spinner');
+        
+        logoImg.onerror = function() {
+          console.log('Primary logo failed, trying alternative sources...');
+          
+          // Try alternative logo URLs
+          const alternativeLogos = [
+            'https://sssihl.edu.in/wp-content/uploads/2021/07/SSSIHL-Logo.png',
+            'https://upload.wikimedia.org/wikipedia/en/thumb/8/8b/Sri_Sathya_Sai_Institute_of_Higher_Learning_logo.png/200px-Sri_Sathya_Sai_Institute_of_Higher_Learning_logo.png',
+            'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiByeD0iMTAiIGZpbGw9IiMxZTNjNzIiLz4KPHRleHQgeD0iNjAiIHk9IjcwIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSIyNCIgZm9udC13ZWlnaHQ9ImJvbGQiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlVOSVY8L3RleHQ+Cjwvc3ZnPgo=' // Fallback SVG logo
+          ];
+          
+          let logoIndex = 0;
+          const tryNextLogo = () => {
+            if (logoIndex < alternativeLogos.length) {
+              this.src = alternativeLogos[logoIndex];
+              logoIndex++;
+            } else {
+              // All logos failed, show spinner
+              this.style.display = 'none';
+              spinner.style.display = 'block';
+            }
+          };
+          
+          this.onerror = tryNextLogo;
+          tryNextLogo();
+        };
+      }
+      
+      // Update loading message
+      const loadingText = session.loadingOverlay.querySelector('.loading-text');
+      if (loadingText) {
+        loadingText.textContent = message;
+      }
+      
+      session.loadingOverlay.style.display = 'flex';
+    }
+    
+    function hideLoading() {
+      if (session.loadingOverlay) {
+        session.loadingOverlay.style.display = 'none';
+      }
+    }
+
+    // ===== LOGOUT FUNCTION =====
+    function logout() {
+      showModal(
+        'Confirm Logout',
+        'Sai Ram,Are you sure you want to logout?',
+        'warning',
+        'Logout',
+        true,
+        () => {
+          showToast('Logging Out', 'Goodbye! Returning to login screen...', 'info');
+          resetToLogin();
+        }
+      );
+    }
+
+    // ===== ENHANCED LOGIN FUNCTION =====
+    function login() {
+      const emailInput = document.getElementById('email');
+      const otpInput = document.getElementById('otp');
+      
+      if (!emailInput || !otpInput) {
+        showMessage('Login form elements not found. Please refresh the page.', 'danger');
+        return;
+      }
+      
+      const email = emailInput.value ? emailInput.value.trim() : '';
+      const otp = otpInput.value ? otpInput.value.trim() : '';
+      
+      if (!email || !otp) {
+        showMessage('Please provide both email address and OTP', 'danger');
+        showToast('Input Required', 'Both email and OTP are required', 'warning');
+        return;
+      }
+      
+      if (otp.length !== 6) {
+        showMessage('OTP must be exactly 6 digits', 'danger');
+        showToast('Invalid OTP', 'OTP must be 6 digits', 'error');
+        return;
+      }
+      
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        showMessage('Please enter a valid email address', 'danger');
+        showToast('Invalid Email', 'Please check your email format', 'error');
+        return;
+      }
+      
+      
+      showLoading();
+      
+      console.log('login: Attempting authentication with email:', email);
+      
+      google.script.run
+        .withSuccessHandler(function(isValid) {
+          hideLoading();
+          
+          console.log('login: Authentication result:', isValid);
+          
+          if (isValid === true) {
+            if (!session.setEmail(email)) {
+              showMessage('Error: Failed to establish session. Please try again.', 'danger');
+              showToast('Session Error', 'Failed to establish session', 'error');
+              return;
+            }
+            
+            document.getElementById('login').style.display = 'none';
+            document.getElementById('students-container').style.display = 'block';
+            showToast('Welcome!', `Successfully logged in as ${session.getEmail()}`, 'success');
+            
+            // ✅ CLEAR ANY PREVIOUS SESSION STATE ON NEW LOGIN
+            session.confirmedPendingRequests.clear();
+            session.pendingRequestTracker = null;
+            
+            setTimeout(() => {
+              const currentEmail = session.getEmail();
+              if (currentEmail) {
+                loadStudentsWithSessionPreservation(currentEmail);
+              } else {
+                console.error('login: Session became invalid after successful authentication');
+                showMessage('Session error. Please refresh and login again.', 'danger');
+                resetToLogin();
+              }
+            }, 100);
+            
+          } else {
+            console.log('login: Authentication failed');
+            showMessage('Authentication failed. Please verify your credentials and try again.', 'danger');
+            showToast('Authentication Failed', 'Please check your email and OTP', 'error');
+          }
+        })
+        .withFailureHandler(function(error) {
+          hideLoading();
+          console.error('login: Authentication error:', error);
+          const errorMessage = error.message || error.toString();
+          showMessage('Authentication error: ' + errorMessage, 'danger');
+          showToast('System Error', 'Authentication system error', 'error');
+        })
+        .verifyOTP(email, otp);
+    }
+
+    // ===== ENHANCED LOAD STUDENTS WITH SESSION PRESERVATION =====
+    function loadStudentsWithSessionPreservation(email) {
+      console.log('loadStudentsWithSessionPreservation: Called with email:', email);
+      
+      if (!email || typeof email !== 'string' || email.trim() === '') {
+        console.error('loadStudentsWithSessionPreservation: Invalid email parameter:', email);
+        showMessage('Error: Invalid email for loading students. Please login again.', 'danger');
+        showToast('Session Error', 'Invalid email parameter', 'error');
+        resetToLogin();
+        return Promise.reject('Invalid email');
+      }
+      
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email.trim())) {
+        console.error('loadStudentsWithSessionPreservation: Invalid email format:', email);
+        showMessage('Error: Invalid email format. Please login again.', 'danger');
+        showToast('Session Error', 'Invalid email format', 'error');
+        resetToLogin();
+        return Promise.reject('Invalid email format');
+      }
+      
+      // Store current session state before refresh
+      const preservedState = {
+        confirmedPendingRequests: session.confirmedPendingRequests ? new Set(session.confirmedPendingRequests) : new Set(),
+        pendingRequestTracker: session.pendingRequestTracker ? { ...session.pendingRequestTracker } : null
+      };
+      
+      console.log('loadStudentsWithSessionPreservation: Email validation passed, calling server...');
+      showLoading();
+      
+      return new Promise((resolve, reject) => {
+        google.script.run
+          .withSuccessHandler(function(students) {
+            hideLoading();
+            console.log('loadStudentsWithSessionPreservation: Server response received, students count:', students ? students.length : 'N/A');
+            
+            if (!students || !Array.isArray(students)) {
+              showMessage('Invalid data received from server. Please contact administrator.', 'danger');
+              showToast('Data Error', 'Invalid server response', 'error');
+              reject('Invalid server response');
+              return;
+            }
+            
+            if (students.length === 0) {
+              showMessage('No students found for your email address.', 'warning');
+              showToast('No Data', 'No students assigned to your email', 'warning');
+            } else {
+              showToast('Data Loaded', `Loaded ${students.length} students successfully`, 'success');
+            }
+            
+            // ✅ MERGE SESSION STATE WITH SERVER DATA
+            students.forEach(student => {
+              if (preservedState.confirmedPendingRequests.has(student.regdNo)) {
+                student.hasPendingRequest = true;
+                console.log(`Preserved pending request state for ${student.regdNo}`);
+              }
+            });
+            
+            // Restore session state
+            session.confirmedPendingRequests = preservedState.confirmedPendingRequests;
+            session.pendingRequestTracker = preservedState.pendingRequestTracker;
+            
+            displayStudents(students);
+            
+            const unlockedStudents = students.filter(s => s.isUnlocked || s.isInEditMode);
+            if (unlockedStudents.length > 0) {
+              showUnlockNotification(unlockedStudents);
+            }
+            
+            resolve(students);
+          })
+          .withFailureHandler(function(error) {
+            hideLoading();
+            console.error('loadStudentsWithSessionPreservation: Server error:', error);
+            const errorMessage = error.message || error.toString();
+            showMessage('Error loading student data: ' + errorMessage, 'danger');
+            showToast('Server Error', 'Failed to load students', 'error');
+            
+            if (errorMessage.toLowerCase().includes('email') || errorMessage.toLowerCase().includes('parameter')) {
+              console.log('loadStudentsWithSessionPreservation: Email-related error detected, resetting to login');
+              setTimeout(() => {
+                resetToLogin();
+              }, 2000);
+            }
+            
+            reject(error);
+          })
+          .getStudents(email.trim());
+      });
+    }
+
+    // Wrapper for backwards compatibility
+    function loadStudents(email) {
+      return loadStudentsWithSessionPreservation(email);
+    }
+
+    // ===== ENHANCED REFRESH FUNCTION WITH SESSION PRESERVATION =====
+    function refreshData() {
+      console.log('🔄 Enhanced refresh starting with session preservation...');
+      
+      if (!session.isValid()) {
+        console.error('refreshData: Session invalid');
+        
+        showToast('Session Expired', 'Please refresh and login again.', 'warning');
+        resetToLogin();
+        return;
+      }
+      
+      // ✅ PRESERVE CURRENT STATE INFO BEFORE REFRESH
+      const beforeRefresh = {
+        studentsCount: session.currentStudents.length,
+        pendingCount: session.currentStudents.filter(s => s.hasPendingRequest).length,
+        unlockedCount: session.currentStudents.filter(s => s.isUnlocked || s.isInEditMode).length,
+        sessionPendingCount: session.confirmedPendingRequests ? session.confirmedPendingRequests.size : 0
+      };
+      
+      const currentEmail = session.getEmail();
+      console.log('refreshData: Using email:', currentEmail);
+      
+      
+      showToast('Refreshing', 'Syncing with latest data...', 'info');
+      
+      // Use the session-preserving load function
+      loadStudentsWithSessionPreservation(currentEmail).then(() => {
+        
+        // ✅ COMPARE STATE AFTER REFRESH
+        const afterRefresh = {
+          studentsCount: session.currentStudents.length,
+          pendingCount: session.currentStudents.filter(s => s.hasPendingRequest).length,
+          unlockedCount: session.currentStudents.filter(s => s.isUnlocked || s.isInEditMode).length,
+          sessionPendingCount: session.confirmedPendingRequests ? session.confirmedPendingRequests.size : 0
+        };
+        
+        // ✅ NOTIFY OF IMPORTANT CHANGES
+        if (afterRefresh.pendingCount < beforeRefresh.pendingCount) {
+          const approvedCount = beforeRefresh.pendingCount - afterRefresh.pendingCount;
+          showToast('Requests Updated', `${approvedCount} edit request(s) have been processed!`, 'success', 7000);
+        }
+        
+        if (afterRefresh.unlockedCount > beforeRefresh.unlockedCount) {
+          const newUnlocks = afterRefresh.unlockedCount - beforeRefresh.unlockedCount;
+          showToast('Edit Access Granted', `${newUnlocks} student(s) are now unlocked for editing!`, 'success', 7000);
+        }
+        
+        // ✅ SHOW PRESERVATION INFO IF NEEDED
+        if (session.confirmedPendingRequests.size > 0) {
+          console.log('✅ Preserved session pending requests:', Array.from(session.confirmedPendingRequests));
+          showToast('State Preserved', `Maintained ${session.confirmedPendingRequests.size} pending request(s) during refresh`, 'info', 3000);
+        }
+        
+        console.log('✅ Enhanced refresh completed with session preservation:', { 
+          beforeRefresh, 
+          afterRefresh, 
+          preservedCount: session.confirmedPendingRequests.size 
+        });
+      }).catch(error => {
+        console.error('❌ Refresh failed:', error);
+        showToast('Refresh Failed', 'Could not refresh data. Please try again.', 'error');
+      });
+    }
+
+    // ===== ENHANCED DISPLAY STUDENTS WITH SESSION AWARENESS =====
+    function displayStudents(students) {
+      session.currentStudents = students;
+      const tbody = document.getElementById('studentTableBody');
+      tbody.innerHTML = '';
+      
+      if (students.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 40px; color: #6c757d;">No students currently assigned to your email address</td></tr>';
+        hideExaminerInfoCard();
+        return;
+      }
+      
+      showExaminerInfoCard(students);
+      
+      let unverifiedCount = 0;
+      let verifiedCount = 0;
+      let unlockedCount = 0;
+      let pendingRequestCount = 0;
+      
+      console.log('🔄 Displaying', students.length, 'students with session awareness...');
+      
+      students.forEach((student, index) => {
+        const tr = document.createElement('tr');
+        
+        // ✅ ENHANCED: Check both server and session state for pending requests
+        const hasServerPendingRequest = student.hasPendingRequest;
+        const hasSessionPendingRequest = session.hasPendingRequest(student.regdNo);
+        const hasPendingRequest = hasServerPendingRequest || hasSessionPendingRequest;
+        
+        // Override student object with combined state
+        student.hasPendingRequest = hasPendingRequest;
+        
+        // ✅ ENHANCED: Priority-based row styling with session awareness
+        if (hasPendingRequest) {
+          tr.className = 'status-pending-request';
+          pendingRequestCount++;
+          console.log(`🟣 Student ${student.regdNo}: Pending request (server: ${hasServerPendingRequest}, session: ${hasSessionPendingRequest})`);
+        } else if (student.verified === '✅' && !student.isUnlocked && !student.isInEditMode) {
+          tr.className = 'status-verified';
+          verifiedCount++;
+          console.log(`🟢 Student ${student.regdNo}: Verified & locked`);
+        } else if (student.isUnlocked || student.isInEditMode) {
+          tr.className = 'status-unlocked';
+          unlockedCount++;
+          console.log(`🟡 Student ${student.regdNo}: Unlocked for editing`);
+        } else {
+          unverifiedCount++;
+          console.log(`⚪ Student ${student.regdNo}: Unverified`);
+        }
+        
+        let statusBadge = getStatusBadge(student);
+        
+        // ✅ ENHANCED: Smart checkbox state management with session awareness
+        const checkboxDisabled = hasPendingRequest ? 'disabled' : '';
+        const checkboxTitle = hasPendingRequest ? 
+          'This student has a pending edit request. Selection disabled until request is processed.' : 
+          'Select this student for bulk operations';
+        
+        // Get max marks for validation
+        const maxMarks = student.maxMarks || 100;
+        
+          tr.innerHTML = `
+            <td class="checkbox-column">
+              <input type="checkbox" 
+                    class="student-checkbox" 
+                    value="${student.regdNo}" 
+                    title="${checkboxTitle}"
+                    onchange="updateBulkButtons()" 
+                    ${checkboxDisabled}>
+            </td>
+            <td><strong>${student.regdNo}</strong></td>
+            <td>${student.name}</td>
+            <td>
+            <input type="number" 
+                  min="0" 
+                  max="${maxMarks}" 
+                  step="0.1" 
+                  value="${student.marks || ''}" 
+                  class="marks-input" 
+                  id="marks_${student.regdNo}" 
+                  title="${getMarksInputTitle(student)}"
+                  ${student.canEdit && !hasPendingRequest ? '' : 'disabled'}
+                  oninput="onMarksInput('${student.regdNo}')" 
+                  onchange="onMarksChange('${student.regdNo}')"
+                  onblur="cleanMarksInputOnBlur('${student.regdNo}')"
+                  onpaste="handleMarksPaste(event, '${student.regdNo}')">
+            <span id="indicator_${student.regdNo}" class="auto-save-indicator"></span>
+            </td>
+            <td id="status_${student.regdNo}">${statusBadge}</td>
+          `;
+        tbody.appendChild(tr);
+      });
+      
+      // ✅ ENHANCED: Comprehensive status updates with session awareness
+      updateStatusMessage(unverifiedCount, verifiedCount, unlockedCount, pendingRequestCount);
+      updateBulkButtons();
+      updateSaveAllButton();
+      
+      // ✅ ENHANCED: Automatic selection management for pending requests
+      setTimeout(() => {
+        clearSelectionForPendingRequests();
+      }, 100);
+      
+      // ✅ NEW: Show notifications for pending requests
+      if (pendingRequestCount > 0) {
+        showPendingRequestNotification(pendingRequestCount);
+      }
+      
+      console.log('✅ Display completed with session awareness:', {
+        total: students.length,
+        unverified: unverifiedCount,
+        verified: verifiedCount,
+        unlocked: unlockedCount,
+        pending: pendingRequestCount,
+        sessionPending: session.getPendingRequestsCount()
+      });
+    }
+
+    // ✅ NEW: Handle blur event to clean marks input
+function cleanMarksInputOnBlur(regdNo) {
+  const input = document.getElementById('marks_' + regdNo);
+  if (input) {
+    cleanMarksInput(input);
+  }
+}
+
+// ✅ NEW: Handle paste event to clean pasted content
+function handleMarksPaste(event, regdNo) {
+  // Prevent default paste
+  event.preventDefault();
+  
+  // Get pasted data
+  const pastedData = (event.clipboardData || window.clipboardData).getData('text');
+  
+  // Clean the pasted data
+  let cleanedData = pastedData.replace(/[^\d.]/g, ''); // Remove non-numeric except decimal
+  
+  // Remove leading zeros
+  if (cleanedData.match(/^0+\d/) && !cleanedData.includes('.')) {
+    cleanedData = cleanedData.replace(/^0+/, '');
+  } else if (cleanedData.match(/^0+$/) && cleanedData.length > 1) {
+    cleanedData = '0';
+  }
+  
+  // Set the cleaned value
+  const input = event.target;
+  input.value = cleanedData;
+  
+  // Trigger the input event to validate and save
+  onMarksInput(regdNo);
+}
+
+    function getMarksInputTitle(student) {
+      const maxMarks = student.maxMarks || 100;
+      
+      if (student.hasPendingRequest) {
+        return 'Edit access requested. Marks input disabled until request is approved.';
+      } else if (student.verified === '✅' && !student.isUnlocked && !student.isInEditMode) {
+        return 'Marks are verified and locked. Request edit access to modify.';
+      } else if (student.isUnlocked || student.isInEditMode) {
+        return `Marks can be edited. Enter marks between 0-${maxMarks}. Changes will be auto-saved.`;
+      } else {
+        return `Enter marks between 0-${maxMarks}. Changes will be auto-saved.`;
+      }
+    }
+
+    function showPendingRequestNotification(pendingCount) {
+      const notificationBanner = document.getElementById('unlock-notification');
+      
+      if (notificationBanner) {
+        notificationBanner.innerHTML = `
+          <strong>📋 Edit Requests Pending:</strong> 
+          You have ${pendingCount} edit request(s) awaiting approval from the Controller of Examinations. 
+          Check your email for updates.
+        `;
+        notificationBanner.className = 'notification-banner pending-theme show';
+        
+        setTimeout(() => {
+          notificationBanner.classList.remove('show');
+        }, 8000);
+      }
+      
+      showToast(
+        'Pending Requests', 
+        `${pendingCount} edit request(s) are pending approval`, 
+        'info', 
+        5000
+      );
+    }
+
+    // ===== ENHANCED STATUS BADGE WITH SESSION AWARENESS =====
+    function getStatusBadge(student) {
+      const regdNo = student.regdNo;
+      const input = document.getElementById('marks_' + regdNo);
+      const currentMarks = input ? input.value : student.marks;
+      
+      // ✅ ENHANCED: Check both server and session state for pending requests
+      const hasServerPendingRequest = student.hasPendingRequest;
+      const hasSessionPendingRequest = session.hasPendingRequest(regdNo);
+      const hasPendingRequest = hasServerPendingRequest || hasSessionPendingRequest;
+      
+      // ✅ PRIORITY 1: Check for pending edit request (HIGHEST PRIORITY)
+      if (hasPendingRequest) {
+        const source = hasServerPendingRequest ? 'Server' : 'Session';
+        console.log(`Status badge for ${regdNo}: Pending request (${source})`);
+        return '<span class="status-badge status-requested-badge">📋 Edit Access Requested</span>';
+      }
+      
+      // ✅ PRIORITY 2: Check if verified and locked
+      if (student.verified === '✅' && !student.isUnlocked && !student.isInEditMode) {
+        return '<span class="status-badge status-verified-badge">✅ Verified & Locked</span>';
+      } 
+      
+      // ✅ PRIORITY 3: Check if unlocked for editing
+      else if (student.isInEditMode || student.isUnlocked) {
+        if (!currentMarks || currentMarks === '') {
+          return '<span class="status-badge status-empty-badge">📝 Enter Marks</span>';
+        } else if (session.savingStates.has(regdNo)) {
+          return '<span class="status-badge status-saving-badge">💾 Marks getting saved</span>';
+        } else {
+          return '<span class="status-badge status-unlocked-badge">🔓 Unlocked for Edit</span>';
+        }
+      }
+      
+      // ✅ PRIORITY 4: Check marks status for unverified students
+      else if (!currentMarks || currentMarks === '') {
+        return '<span class="status-badge status-empty-badge">📝 Enter Marks</span>';
+      } 
+      else if (session.savingStates.has(regdNo)) {
+        return '<span class="status-badge status-saving-badge">💾 Marks getting saved</span>';
+      }
+      else if (session.modifiedStudents.has(regdNo)) {
+        return '<span class="status-badge status-modified-badge">🔄 Modified (Auto-saving...)</span>';
+      }
+      else if (currentMarks && currentMarks !== '') {
+        return '<span class="status-badge status-saved-badge">✅ Marks saved, Please verify</span>';
+      }
+      else {
+        return '<span class="status-badge status-pending-badge">⏳ Pending Verification</span>';
+      }
+    }
+
+    function updateStudentStatusBadge(regdNo) {
+      const student = session.currentStudents.find(s => s.regdNo === regdNo);
+      if (student) {
+        const statusCell = document.getElementById('status_' + regdNo);
+        if (statusCell) {
+          statusCell.innerHTML = getStatusBadge(student);
+        }
+      }
+    }
+
+    // ===== ENHANCED REQUEST EDIT ACCESS FUNCTION =====
+    function requestEditForSelected() {
+      if (!session.isValid()) {
+        showToast('Session Error', 'Session expired. Please login again.', 'error');
+        resetToLogin();
+        return;
+      }
+      
+      const selected = getSelectedStudents();
+      if (selected.length === 0) {
+        showToast('Selection Required', 'Please select at least one student', 'warning');
+        return;
+      }
+      
+      // ✅ NEW: Check for students with pending requests BEFORE filtering
+      const alreadyPendingStudents = selected.filter(regdNo => {
+        const student = session.currentStudents.find(s => s.regdNo === regdNo);
+        const hasServerPending = student && student.hasPendingRequest;
+        const hasSessionPending = session.hasPendingRequest(regdNo);
+        return hasServerPending || hasSessionPending;
+      });
+      
+      // ✅ NEW: If any selected students have pending requests, show specific message
+      if (alreadyPendingStudents.length > 0) {
+        const pendingNames = alreadyPendingStudents.map(regdNo => {
+          const student = session.currentStudents.find(s => s.regdNo === regdNo);
+          return `${regdNo} (${student?.name || 'Unknown'})`;
+        }).join(', ');
+        
+        showModal(
+          'Request Already Submitted',
+          `<p><strong>⚠️ Edit access requests already pending</strong></p>
+           <p>The following students already have pending edit requests:</p>
+           <div style="background: #fff3cd; padding: 12px; border-radius: 6px; margin: 12px 0;">
+             <strong>${pendingNames}</strong>
+           </div>
+           <p><strong>Current Status:</strong> Waiting for approval from Controller of Examinations</p>
+           <p><strong>What to do:</strong></p>
+           <ul style="margin: 12px 0; padding-left: 20px; color: #666;">
+             <li>Wait for email notification from examination section</li>
+             <li>Check your email regularly for updates</li>
+             <li>Do not submit duplicate requests</li>
+             <li>Contact examination section if urgent</li>
+           </ul>`,
+          'warning',
+          'I Understand',
+          false,
+          null
+        );
+        return;
+      }
+      
+      // Filter for verified students without pending requests
+      const eligibleStudents = selected.filter(regdNo => {
+        const student = session.currentStudents.find(s => s.regdNo === regdNo);
+        const hasServerPending = student && student.hasPendingRequest;
+        const hasSessionPending = session.hasPendingRequest(regdNo);
+        return student && student.verified === '✅' && !hasServerPending && !hasSessionPending;
+      });
+      
+      if (eligibleStudents.length === 0) {
+        showToast('Invalid Selection', 'Edit access can only be requested for verified students without pending requests', 'warning');
+        return;
+      }
+      
+      const studentDetails = eligibleStudents.map(regdNo => {
+        const student = session.currentStudents.find(s => s.regdNo === regdNo);
+        return student ? { 
+          regdNo: regdNo, 
+          name: student.name
+        } : { 
+          regdNo: regdNo, 
+          name: 'Unknown'
+        };
+      });
+      
+      let confirmMessage = `
+        <p>You are about to request edit access for <strong>${eligibleStudents.length}</strong> verified student(s):</p>
+        <div class="confirm-students pending-theme">
+      `;
+      
+      studentDetails.forEach((student, index) => {
+        confirmMessage += `
+          <div class="confirm-student-item pending-item">
+            <div class="confirm-student-number pending-number">${index + 1}</div>
+            <div class="confirm-student-details">
+              <div class="confirm-student-regdno">${student.regdNo}</div>
+              <div class="confirm-student-name">${student.name}</div>
+            </div>
+          </div>
+        `;
+      });
+      
+      confirmMessage += `
+        </div>
+        <p><strong>⚠️ Important Notice:</strong></p>
+        <ul style="margin: 12px 0; padding-left: 20px; color: #666;">
+          <li><strong>Status will change immediately</strong> to "Edit Access Requested"</li>
+          <li><strong>Wait for email notification</strong> from examination section</li>
+          <li><strong>Request is non-reversible</strong> once submitted</li>
+        </ul>
+        <p style="color: #dc3545; font-weight: 500;">⚠️ Only submit if you are certain you need edit access for these students.</p>
+      `;
+      
+      showModal(
+        'Confirm Edit Access Request',
+        confirmMessage,
+        'warning',
+        'Submit Request',
+        true,
+        () => submitEditRequestWithPersistentState(eligibleStudents)
+      );
+    }
+
+    // ===== FIXED SUBMIT EDIT REQUEST FUNCTION =====
+    function submitEditRequestWithPersistentState(eligibleStudents) {
+      console.log('🔄 Starting fixed edit request submission...');
+      
+      // ✅ STEP 1: IMMEDIATE UI UPDATE (Before server call)
+      console.log('🔄 Step 1: Immediate UI update for', eligibleStudents.length, 'students');
+      
+      // Store original state for rollback if needed
+      const originalStates = new Map();
+      
+      eligibleStudents.forEach(regdNo => {
+        const student = session.currentStudents.find(s => s.regdNo === regdNo);
+        if (student) {
+          // Store original state
+          originalStates.set(regdNo, {
+            hasPendingRequest: student.hasPendingRequest,
+            rowClass: document.querySelector(`input[value="${regdNo}"]`)?.closest('tr')?.className || ''
+          });
+          
+          // Apply pending state immediately
+          student.hasPendingRequest = true;
+          session.addPendingRequest(regdNo);
+          console.log(`✅ Marked ${regdNo} as having pending request (local)`);
+          
+          // Update the status badge immediately
+          updateStudentStatusBadge(regdNo);
+          
+          // Update the row styling and disable checkbox
+          const checkbox = document.querySelector(`input[value="${regdNo}"]`);
+          if (checkbox) {
+            checkbox.checked = false;
+            checkbox.disabled = true;
+            checkbox.title = 'Edit request submitted. Selection disabled until request is processed.';
+            
+            const row = checkbox.closest('tr');
+            if (row) {
+              row.classList.add('status-pending-request');
+              row.classList.remove('status-verified', 'status-unlocked', 'status-modified');
+            }
+          }
+        }
+      });
+      
+      // ✅ STEP 2: UPDATE BULK BUTTONS IMMEDIATELY
+      updateBulkButtons();
+      clearSelection();
+      
+      // ✅ STEP 3: SHOW IMMEDIATE FEEDBACK
+      showToast('Request Submitted', 'Status updated! Sending to examination section...', 'info', 3000);
+      
+      // ✅ STEP 4: DISABLE EDIT REQUEST BUTTON AND SHOW PERSISTENT STATE
+      const editRequestBtn = document.getElementById('editRequestBtn');
+      const originalText = editRequestBtn.innerHTML;
+      editRequestBtn.disabled = true;
+      editRequestBtn.innerHTML = '📤 Submitting Request...';
+      editRequestBtn.classList.add('btn-loading');
+      
+      // ✅ STEP 5: CREATE PERSISTENT STATE TRACKER
+      const pendingRequestTracker = {
+        requestIds: [],
+        submissionTime: new Date(),
+        studentRegdNos: [...eligibleStudents]
+      };
+      
+      // Store in session for persistence
+      session.pendingRequestTracker = pendingRequestTracker;
+      
+      // ✅ STEP 6: SERVER SUBMISSION (Background)
+      const currentEmail = session.getEmail();
+      
+      google.script.run
+        .withSuccessHandler(function(result) {
+          console.log('📧 Server response received:', result);
+          
+          // Re-enable button
+          editRequestBtn.disabled = false;
+          editRequestBtn.innerHTML = originalText;
+          editRequestBtn.classList.remove('btn-loading');
+          
+          if (result && result.success) {
+            console.log('✅ Server confirmed request submission');
+            
+            showToast('Request Confirmed', `Edit requests confirmed for ${eligibleStudents.length} students`, 'success');
+            
+            const successMessage = `
+              <p><strong>✅ Request Successfully Submitted!</strong></p>
+              <p><strong>Request Details:</strong></p>
+              <ul style="margin: 12px 0; padding-left: 20px; color: #666;">
+                <li>Students: ${eligibleStudents.length} students selected</li>
+                <li>Submitted: ${new Date().toLocaleString()}</li>
+                <li>Status: <span style="color: #9c27b0; font-weight: 600;">📋 Edit Access Requested</span></li>
+                <li>Notification sent to Controller of Examinations</li>
+              </ul>
+              <p><strong>Next Steps:</strong></p>
+              <ul style="margin: 12px 0; padding-left: 20px; color: #666;">
+                <li><strong>Wait for email notification</strong> (approval/disapproval)</li>
+                <li><strong>If approved:</strong> Students will show as "Unlocked for Edit"</li>
+                <li><strong>Edit window:</strong> 48 hours once approved</li>
+                <li><strong>Contact:</strong> Examination section for urgent matters</li>
+              </ul>
+              <p style="background: #e3f2fd; padding: 12px; border-radius: 6px; margin: 12px 0;">
+                <strong>💡 Pro Tip:</strong> The status has been updated in your portal. 
+                You can continue working with other students while waiting for approval.
+              </p>
+            `;
+            
+            showModal(
+              'Request Submitted Successfully',
+              successMessage,
+              'success',
+              'Got it!',
+              false,
+              null
+            );
+            
+            // ✅ UPDATE STATUS MESSAGE BUT NO AUTO REFRESH
+            updateStatusMessage();
+            
+          } else {
+            console.error('❌ Server rejected request:', result?.message);
+            
+            // ✅ ROLLBACK UI CHANGES ON SERVER ERROR
+            rollbackPendingRequestChanges(eligibleStudents, originalStates);
+            
+            showToast('Request Failed', result?.message || 'Failed to submit edit requests', 'error');
+            
+            const errorMessage = `
+              <p><strong>❌ Request Submission Failed</strong></p>
+              <p>We couldn't process your edit request at this time.</p>
+              <p><strong>Error:</strong> ${result?.message || 'Unknown error occurred'}</p>
+              <p><strong>Status:</strong> No changes made - you can try again</p>
+              <p><strong>What to do:</strong></p>
+              <ul style="margin: 12px 0; padding-left: 20px; color: #666;">
+                <li>Check your internet connection</li>
+                <li>Ensure the students are still verified</li>
+                <li>Try submitting the request again</li>
+                <li>Contact IT support if the problem persists</li>
+              </ul>
+            `;
+            
+            showModal(
+              'Request Failed',
+              errorMessage,
+              'error',
+              'Try Again',
+              false,
+              null
+            );
+          }
+        })
+        .withFailureHandler(function(error) {
+          console.error('🚨 Server error during request submission:', error);
+          
+          // Re-enable button
+          editRequestBtn.disabled = false;
+          editRequestBtn.innerHTML = originalText;
+          editRequestBtn.classList.remove('btn-loading');
+          
+          // ✅ ROLLBACK UI CHANGES ON NETWORK ERROR
+          rollbackPendingRequestChanges(eligibleStudents, originalStates);
+          
+          const errorMessage = error.message || error.toString();
+          showToast('System Error', 'Network error during request submission', 'error');
+          
+          const techErrorMessage = `
+            <p><strong>⚠️ Network Error</strong></p>
+            <p>A network error occurred while submitting your request.</p>
+            <p><strong>Error Details:</strong> ${errorMessage}</p>
+            <p><strong>Status:</strong> Request was not submitted - you can try again</p>
+            <p><strong>Recommended Actions:</strong></p>
+            <ul style="margin: 12px 0; padding-left: 20px; color: #666;">
+              <li>Check your internet connection</li>
+              <li>Wait a moment and try again</li>
+              <li>Refresh the page if the problem persists</li>
+              <li>Contact IT support if errors continue</li>
+            </ul>
+          `;
+        
+          showModal(
+            'Network Error',
+            techErrorMessage,
+            'error',
+            'Close',
+            false,
+            null
+          );
+        })
+        .requestEditForSelectedStudents(currentEmail, eligibleStudents);
+    }
+
+    // ===== ROLLBACK FUNCTION FOR FAILED REQUESTS =====
+    function rollbackPendingRequestChanges(eligibleStudents, originalStates) {
+      console.log('🔄 Rolling back UI changes due to server error...');
+      
+      eligibleStudents.forEach(regdNo => {
+        const student = session.currentStudents.find(s => s.regdNo === regdNo);
+        if (student && originalStates.has(regdNo)) {
+          const originalState = originalStates.get(regdNo);
+          
+          // Restore original state
+          student.hasPendingRequest = originalState.hasPendingRequest;
+          session.removePendingRequest(regdNo);
+          updateStudentStatusBadge(regdNo);
+          
+          const checkbox = document.querySelector(`input[value="${regdNo}"]`);
+          if (checkbox) {
+            checkbox.disabled = false;
+            checkbox.title = 'Select this student for bulk operations';
+            
+            const row = checkbox.closest('tr');
+            if (row) {
+              row.className = originalState.rowClass;
+            }
+          }
+        }
+      });
+      
+      updateBulkButtons();
+      
+      // Remove from session tracking
+      if (session.pendingRequestTracker) {
+        delete session.pendingRequestTracker;
+      }
+    }
+
+    // ===== ENHANCED BULK BUTTONS UPDATE WITH PERSISTENT STATE =====
+   function updateBulkButtons() {
+  const selected = getSelectedStudents();
+  const bulkVerifyBtn = document.getElementById('bulkVerifyBtn');
+  const editRequestBtn = document.getElementById('editRequestBtn');
+  
+  // ✅ PRESERVED: Normal unverified students (original workflow)
+  const selectedUnverifiedWithMarks = selected.filter(regdNo => {
+    const student = session.currentStudents.find(s => s.regdNo === regdNo);
+    const input = document.getElementById('marks_' + regdNo);
+    const maxMarks = student ? student.maxMarks : 100;
+    
+    // Regular unverified students (never been verified before)
+    return student && 
+           student.verified !== '✅' && 
+           !student.isUnlocked && 
+           !student.isInEditMode &&
+           input && 
+           input.value && 
+           !isNaN(input.value) && 
+           input.value >= 0 && 
+           input.value <= maxMarks;
+  });
+  
+  // ✅ NEW: Students with active edit access (unlocked after edit request approval)
+  const selectedUnlockedWithMarks = selected.filter(regdNo => {
+    const student = session.currentStudents.find(s => s.regdNo === regdNo);
+    const input = document.getElementById('marks_' + regdNo);
+    const maxMarks = student ? student.maxMarks : 100;
+    
+    // Students who have edit access and valid marks
+    return student && 
+           (student.isUnlocked || student.isInEditMode) &&
+           input && 
+           input.value && 
+           !isNaN(input.value) && 
+           input.value >= 0 && 
+           input.value <= maxMarks;
+  });
+  
+  const selectedAlreadyVerified = selected.filter(regdNo => {
+    const student = session.currentStudents.find(s => s.regdNo === regdNo);
+    return student && student.verified === '✅' && !student.isUnlocked && !student.isInEditMode;
+  });
+  
+  const selectedWithPendingRequests = selected.filter(regdNo => {
+    const student = session.currentStudents.find(s => s.regdNo === regdNo);
+    const hasServerPendingRequest = student && student.hasPendingRequest;
+    const hasSessionPendingRequest = session.hasPendingRequest(regdNo);
+    return hasServerPendingRequest || hasSessionPendingRequest;
+  });
+  
+  // ✅ COMBINED: Both normal and edit access students can be verified
+  const totalEligibleForVerification = selectedUnverifiedWithMarks.length + selectedUnlockedWithMarks.length;
+  
+  // ✅ VERIFY BUTTON LOGIC: Handle all scenarios
+  if (totalEligibleForVerification === 0) {
+    bulkVerifyBtn.disabled = true;
+    
+    if (selected.length === 0) {
+      bulkVerifyBtn.innerHTML = '✅ Verify';
+      bulkVerifyBtn.title = 'Select students with marks to verify';
+    } else if (selectedAlreadyVerified.length > 0 && selectedWithPendingRequests.length === 0) {
+      bulkVerifyBtn.innerHTML = `✅ Already Verified (${selectedAlreadyVerified.length})`;
+      bulkVerifyBtn.title = 'Selected students are already verified and locked';
+      bulkVerifyBtn.classList.add('already-verified');
+    } else if (selectedWithPendingRequests.length > 0) {
+      bulkVerifyBtn.innerHTML = `⏳ Edit Access Pending (${selectedWithPendingRequests.length})`;
+      bulkVerifyBtn.title = 'Selected students have pending edit requests. Wait for approval.';
+      bulkVerifyBtn.classList.add('btn-pending');
+    } else {
+      bulkVerifyBtn.innerHTML = '✅ Enter Marks First';
+      bulkVerifyBtn.title = 'Selected students need valid marks before verification';
+      bulkVerifyBtn.classList.remove('already-verified', 'btn-pending');
+    }
+  } else {
+    bulkVerifyBtn.disabled = false;
+    bulkVerifyBtn.classList.remove('already-verified', 'btn-pending');
+    
+    // ✅ SMART BUTTON TEXT: Based on type of students selected
+    let buttonText = '✅ Verify';
+    let tooltipText = 'Verify and lock marks for ';
+    
+    if (selectedUnverifiedWithMarks.length > 0 && selectedUnlockedWithMarks.length > 0) {
+      // Both types selected
+      buttonText = `✅ Verify (${totalEligibleForVerification})`;
+      tooltipText += `${selectedUnverifiedWithMarks.length} new students and ${selectedUnlockedWithMarks.length} edited students`;
+    } else if (selectedUnlockedWithMarks.length > 0) {
+      // Only edit access students
+      buttonText = `✅ Re-Verify (${selectedUnlockedWithMarks.length})`;
+      tooltipText += `${selectedUnlockedWithMarks.length} students with edit access`;
+    } else {
+      // Only normal students (ORIGINAL LOGIC)
+      buttonText = `✅ Verify (${selectedUnverifiedWithMarks.length})`;
+      tooltipText += `${selectedUnverifiedWithMarks.length} students`;
+    }
+    
+    bulkVerifyBtn.innerHTML = buttonText;
+    bulkVerifyBtn.title = tooltipText;
+    
+    // Add additional info for mixed selections
+    if (selectedAlreadyVerified.length > 0) {
+      bulkVerifyBtn.title += `. Note: ${selectedAlreadyVerified.length} already verified students will be skipped.`;
+    }
+    if (selectedWithPendingRequests.length > 0) {
+      bulkVerifyBtn.title += ` ${selectedWithPendingRequests.length} students with pending requests will be skipped.`;
+    }
+  }
+  
+  // ✅ EDIT REQUEST BUTTON: Filter out students with pending requests (including session-tracked ones)
+  const selectedVerifiedWithoutPending = selected.filter(regdNo => {
+    const student = session.currentStudents.find(s => s.regdNo === regdNo);
+    const hasServerPendingRequest = student && student.hasPendingRequest;
+    const hasSessionPendingRequest = session.hasPendingRequest(regdNo);
+    
+    return student && student.verified === '✅' && 
+           !student.isUnlocked && !student.isInEditMode &&
+           !hasServerPendingRequest && !hasSessionPendingRequest;
+  });
+  
+  const selectedWithPending = selected.filter(regdNo => {
+    const student = session.currentStudents.find(s => s.regdNo === regdNo);
+    const hasServerPendingRequest = student && student.hasPendingRequest;
+    const hasSessionPendingRequest = session.hasPendingRequest(regdNo);
+    
+    return hasServerPendingRequest || hasSessionPendingRequest;
+  });
+  
+  // ✅ EDIT REQUEST BUTTON LOGIC: Smart button text and state management
+  if (selectedWithPending.length > 0 && selectedVerifiedWithoutPending.length === 0) {
+    // All selected students have pending requests
+    editRequestBtn.disabled = true;
+    editRequestBtn.innerHTML = `⏳ Request Already Pending (${selectedWithPending.length})`;
+    editRequestBtn.title = "These students already have pending edit requests. Wait for approval.";
+    editRequestBtn.classList.add('btn-pending');
+  } else if (selectedVerifiedWithoutPending.length > 0) {
+    // Some students are eligible for edit requests
+    editRequestBtn.disabled = false;
+    editRequestBtn.innerHTML = `📝 Request Edit Access (${selectedVerifiedWithoutPending.length})`;
+    editRequestBtn.title = `Request edit access for ${selectedVerifiedWithoutPending.length} verified students`;
+    editRequestBtn.classList.remove('btn-pending');
+    if (selectedWithPending.length > 0) {
+      editRequestBtn.title += `. Note: ${selectedWithPending.length} students already have pending requests.`;
+    }
+  } else {
+    // No eligible students for edit requests
+    editRequestBtn.disabled = true;
+    editRequestBtn.innerHTML = `📝 Request Edit Access`;
+    editRequestBtn.title = "Select verified students without pending requests to request edit access";
+    editRequestBtn.classList.remove('btn-pending');
+  }
+}
+
+    // ===== ENHANCED MARKS INPUT HANDLING =====
+    function onMarksInput(regdNo) {
+      const input = document.getElementById('marks_' + regdNo);
+      const indicator = document.getElementById('indicator_' + regdNo);
+      const student = session.currentStudents.find(s => s.regdNo === regdNo);
+      const maxMarks = student ? student.maxMarks : 100;
+
+      let cleanedValue = input.value;
+      if (cleanedValue && !isNaN(cleanedValue)) {
+      // Remove leading zeros but keep single 0 for decimal numbers like 0.5
+      if (cleanedValue.match(/^0+\d/) && !cleanedValue.includes('.')) {
+        cleanedValue = cleanedValue.replace(/^0+/, '');
+        input.value = cleanedValue;
+      } else if (cleanedValue.match(/^0+$/) && cleanedValue.length > 1) {
+        // Multiple zeros like "000" become single "0"
+        cleanedValue = '0';
+        input.value = cleanedValue;
+      }
+    }
+ 
+    const value = parseFloat(input.value);
+      if (input.value && (isNaN(value) || value < 0 || value > maxMarks)) {
+        input.style.borderColor = '#dc3545';
+        input.style.backgroundColor = '#fff5f5';
+        indicator.innerHTML = '<span style="color: #dc3545;">⚠️</span>';
+        showToast('Invalid Marks', `Marks must be between 0-${maxMarks} for ${regdNo}`, 'warning', 3000);
+        return;
+      } else {
+        input.style.borderColor = '';
+        input.style.backgroundColor = '';
+      }
+      
+      if (session.autoSaveTimeouts.has(regdNo)) {
+        clearTimeout(session.autoSaveTimeouts.get(regdNo));
+      }
+      
+      input.classList.add('modified');
+      input.classList.remove('auto-saved');
+      session.modifiedStudents.add(regdNo);
+      indicator.innerHTML = '<span style="color: #ffc107;">●</span>';
+      
+      updateStudentStatusBadge(regdNo);
+      
+      const timeout = setTimeout(() => {
+        autoSaveMarks(regdNo);
+      }, 2000);
+      
+      session.autoSaveTimeouts.set(regdNo, timeout);
+      updateSaveAllButton();
+    }
+    
+    function onMarksChange(regdNo) {
+      const input = document.getElementById('marks_' + regdNo);
+      const student = session.currentStudents.find(s => s.regdNo === regdNo);
+      const maxMarks = student ? student.maxMarks : 100;
+
+
+    let cleanedValue = input.value;
+    if (cleanedValue && !isNaN(cleanedValue)) {
+      // Remove leading zeros but keep single 0 for decimal numbers like 0.5
+      if (cleanedValue.match(/^0+\d/) && !cleanedValue.includes('.')) {
+        cleanedValue = cleanedValue.replace(/^0+/, '');
+        input.value = cleanedValue;
+      } else if (cleanedValue.match(/^0+$/) && cleanedValue.length > 1) {
+        // Multiple zeros like "000" become single "0"
+        cleanedValue = '0';
+        input.value = cleanedValue;
+      }
+    }  
+      
+      const value = parseFloat(input.value);
+      if (input.value && (isNaN(value) || value < 0 || value > maxMarks)) {
+        input.style.borderColor = '#dc3545';
+        input.style.backgroundColor = '#fff5f5';
+        showToast('Invalid Marks', `Please enter marks between 0-${maxMarks} for ${regdNo}`, 'error');
+        input.focus();
+        return;
+      } else {
+        input.style.borderColor = '';
+        input.style.backgroundColor = '';
+      }
+      
+      if (session.autoSaveTimeouts.has(regdNo)) {
+        clearTimeout(session.autoSaveTimeouts.get(regdNo));
+        session.autoSaveTimeouts.delete(regdNo);
+      }
+      
+      updateStudentStatusBadge(regdNo);
+      autoSaveMarks(regdNo);
+    }
+
+
+    // ✅ NEW: Function to clean marks input and remove leading zeros
+function cleanMarksInput(input) {
+  let value = input.value;
+  
+  if (value && value.trim() !== '') {
+    // Remove any non-numeric characters except decimal point
+    value = value.replace(/[^\d.]/g, '');
+    
+    // Ensure only one decimal point
+    const parts = value.split('.');
+    if (parts.length > 2) {
+      value = parts[0] + '.' + parts.slice(1).join('');
+    }
+    
+    // Remove leading zeros but preserve decimal numbers
+    if (value.match(/^0+\d/) && !value.includes('.')) {
+      // Remove leading zeros from whole numbers like "054" -> "54"
+      value = value.replace(/^0+/, '');
+    } else if (value.match(/^0+$/) && value.length > 1) {
+      // Multiple zeros "000" -> "0"
+      value = '0';
+    } else if (value.match(/^0+\./) && value.length > 2) {
+      // Keep single zero before decimal "00.5" -> "0.5"
+      value = '0' + value.substring(value.indexOf('.'));
+    }
+    
+    // Update input value if it changed
+    if (input.value !== value) {
+      input.value = value;
+    }
+  }
+  
+  return value;
+}
+
+    // ===== ENHANCED AUTO-SAVE =====
+    function autoSaveMarks(regdNo) {
+      if (!session.isValid()) {
+        console.error('autoSaveMarks: Session invalid');
+        showToast('Session Error', 'Session expired. Please login again.', 'error');
+        resetToLogin();
+        return;
+      }
+
+      const input = document.getElementById('marks_' + regdNo);
+      const indicator = document.getElementById('indicator_' + regdNo);
+      const marks = input.value;
+      const student = session.currentStudents.find(s => s.regdNo === regdNo);
+      const maxMarks = student ? student.maxMarks : 100;
+      
+      if (marks && (isNaN(marks) || marks < 0 || marks > maxMarks)) {
+        showToast('Invalid Marks', `Marks for ${regdNo} must be between 0-${maxMarks}`, 'error');
+        return;
+      }
+      
+      session.savingStates.set(regdNo, true);
+      updateStudentStatusBadge(regdNo);
+      indicator.innerHTML = '<span style="color: #17a2b8;">○</span>';
+      
+      const currentEmail = session.getEmail();
+      
+      google.script.run
+        .withSuccessHandler(function(result) {
+          session.savingStates.delete(regdNo);
+          
+          if (result && result.success) {
+            input.classList.remove('modified');
+            input.classList.add('auto-saved');
+            indicator.innerHTML = '<span style="color: #28a745;">✓</span>';
+            session.modifiedStudents.delete(regdNo);
+            
+            const row = input.closest('tr');
+            if (marks && marks.trim() !== '') {
+              row.classList.add('status-modified');
+            }
+            
+            updateStudentStatusBadge(regdNo);
+            
+            setTimeout(() => {
+              indicator.innerHTML = '';
+            }, 3000);
+          } else {
+            indicator.innerHTML = '<span style="color: #dc3545;">✗</span>';
+            updateStudentStatusBadge(regdNo);
+            showToast('Save Failed', result?.message || `Failed to save marks for ${regdNo}`, 'error');
+          }
+          updateSaveAllButton();
+        })
+        .withFailureHandler(function(error) {
+          session.savingStates.delete(regdNo);
+          indicator.innerHTML = '<span style="color: #dc3545;">✗</span>';
+          console.error('Auto-save failed:', error);
+          updateStudentStatusBadge(regdNo);
+          showToast('Save Error', `Auto-save failed for ${regdNo}`, 'error');
+        })
+        .autoSaveMarks(currentEmail, regdNo, marks || null);
+    }
+
+function bulkVerifySelected() {
+  console.log('🔍 bulkVerifySelected: Starting verification process...');
+  
+  // ✅ ENHANCED SESSION VALIDATION
+  if (!session || !session.isValid()) {
+    console.error('❌ bulkVerifySelected: Session invalid');
+    showToast('Session Error', 'Session expired. Please login again.', 'error');
+    resetToLogin();
+    return;
+  }
+  
+  // ✅ ENHANCED EMAIL VALIDATION
+  const currentEmail = session.getEmail();
+  if (!currentEmail || typeof currentEmail !== 'string' || currentEmail.trim() === '') {
+    console.error('❌ bulkVerifySelected: No valid email available');
+    console.error('Session debug:', session.debug());
+    showToast('Session Error', 'Email session lost. Please refresh and login again.', 'error');
+    resetToLogin();
+    return;
+  }
+  
+  console.log('✅ bulkVerifySelected: Email validated:', currentEmail);
+
+  // ✅ ENHANCED STUDENT SELECTION VALIDATION
+  const selected = getSelectedStudents();
+  console.log('📋 bulkVerifySelected: Selected students:', selected);
+  
+  if (selected.length === 0) {
+    showToast('Selection Required', 'Please select students first', 'warning');
+    showMessage('Please select students with marks to verify', 'warning');
+    return;
+  }
+  
+  // ✅ ENHANCED MARKS VALIDATION
+  const studentsWithMarks = [];
+  const studentsWithoutMarks = [];
+  const studentsWithInvalidMarks = [];
+  
+  selected.forEach(regdNo => {
+    const input = document.getElementById('marks_' + regdNo);
+    const student = session.currentStudents.find(s => s.regdNo === regdNo);
+    const maxMarks = student ? student.maxMarks : 100;
+    
+    console.log(`🔍 Validating ${regdNo}:`, {
+      hasInput: !!input,
+      inputValue: input ? input.value : 'N/A',
+      hasStudent: !!student,
+      maxMarks: maxMarks
+    });
+    
+    if (!input) {
+      console.error(`❌ No input found for ${regdNo}`);
+      studentsWithoutMarks.push(regdNo);
+    } else if (!input.value || input.value.trim() === '') {
+      console.warn(`⚠️ Empty marks for ${regdNo}`);
+      studentsWithoutMarks.push(regdNo);
+    } else {
+      const value = parseFloat(input.value);
+      if (isNaN(value) || value < 0 || value > maxMarks) {
+        console.warn(`⚠️ Invalid marks for ${regdNo}: ${input.value} (should be 0-${maxMarks})`);
+        studentsWithInvalidMarks.push(regdNo);
+      } else {
+        console.log(`✅ Valid marks for ${regdNo}: ${value}`);
+        studentsWithMarks.push(regdNo);
+      }
+    }
+  });
+  
+  // ✅ DETAILED VALIDATION REPORTING
+  console.log('📊 Validation results:', {
+    selected: selected.length,
+    withValidMarks: studentsWithMarks.length,
+    withoutMarks: studentsWithoutMarks.length,
+    withInvalidMarks: studentsWithInvalidMarks.length
+  });
+  
+  if (studentsWithMarks.length === 0) {
+    let errorMessage = 'No students with valid marks selected for verification.\n\n';
+    
+    if (studentsWithoutMarks.length > 0) {
+      errorMessage += `Students without marks: ${studentsWithoutMarks.join(', ')}\n`;
+    }
+    if (studentsWithInvalidMarks.length > 0) {
+      errorMessage += `Students with invalid marks: ${studentsWithInvalidMarks.join(', ')}\n`;
+    }
+    
+    errorMessage += '\nPlease enter valid marks before verification.';
+    
+    showToast('Invalid Selection', 'Students need valid marks to verify', 'warning');
+    showMessage(errorMessage, 'warning');
+    return;
+  }
+  
+  // ✅ CONFIRMATION WITH DETAILED INFO
+  const confirmMessage = `
+    <p>Verify and lock marks for <strong>${studentsWithMarks.length}</strong> selected student(s)?</p>
+    <div style="background: #e8f5e8; padding: 12px; border-radius: 6px; margin: 12px 0;">
+      <strong>Students to verify:</strong><br>
+      ${studentsWithMarks.slice(0, 5).join(', ')}${studentsWithMarks.length > 5 ? ` ... and ${studentsWithMarks.length - 5} more` : ''}
+    </div>
+    <p><strong>⚠️ Important:</strong></p>
+    <ul style="margin: 12px 0; padding-left: 20px; color: #666;">
+      <li>Marks will be locked after verification</li>
+      <li>Edit access will require administrative approval</li>
+      <li>This action cannot be undone</li>
+    </ul>
+    <p style="color: #dc3545; font-weight: 500;">Only verify if you are certain the marks are correct.</p>
+  `;
+  
+  showModal(
+    'Confirm Verification',
+    confirmMessage,
+    'warning',
+    'Verify Marks',
+    true,
+    () => performBulkVerification(studentsWithMarks, currentEmail)
+  );
+}
+
+    function performBulkVerification(studentsWithMarks, emailParam = null) {
+  console.log('🔄 performBulkVerification: Starting with', studentsWithMarks.length, 'students');
+  
+  // ✅ DOUBLE-CHECK EMAIL PARAMETER
+  let currentEmail = emailParam;
+  if (!currentEmail) {
+    currentEmail = session.getEmail();
+    console.log('📧 Retrieved email from session:', currentEmail);
+  } else {
+    console.log('📧 Using provided email parameter:', currentEmail);
+  }
+  
+  // ✅ FINAL EMAIL VALIDATION
+  if (!currentEmail || typeof currentEmail !== 'string' || currentEmail.trim() === '') {
+    console.error('❌ performBulkVerification: Invalid email');
+    console.error('Email param:', emailParam);
+    console.error('Session email:', session.getEmail());
+    console.error('Session debug:', session.debug());
+    
+    showToast('Session Error', 'Email session lost during verification. Please refresh and login again.', 'error');
+    showMessage('Email session error. Please refresh the page and login again.', 'danger');
+    resetToLogin();
+    return;
+  }
+  
+  // ✅ FINAL STUDENTS VALIDATION
+  if (!Array.isArray(studentsWithMarks) || studentsWithMarks.length === 0) {
+    console.error('❌ performBulkVerification: Invalid students array');
+    console.error('Students array:', studentsWithMarks);
+    
+    showToast('Verification Error', 'No valid students to verify', 'error');
+    showMessage('No valid students selected for verification', 'danger');
+    return;
+  }
+  
+  console.log('✅ Final validation passed. Proceeding with verification...');
+  console.log('📧 Email:', currentEmail);
+  console.log('👥 Students:', studentsWithMarks);
+  
+  // ✅ UPDATE UI AND CALL SERVER
+  showMessage('Verifying marks for selected students...', 'info');
+  const bulkVerifyBtn = document.getElementById('bulkVerifyBtn');
+  const originalText = bulkVerifyBtn.innerHTML;
+  
+  bulkVerifyBtn.disabled = true;
+  bulkVerifyBtn.classList.add('btn-loading');
+  bulkVerifyBtn.innerHTML = '⏳ Verifying...';
+  
+  // ✅ SERVER CALL WITH ENHANCED ERROR HANDLING
+  google.script.run
+    .withSuccessHandler(function(result) {
+      console.log('📧 Server response received:', result);
+      
+      // Restore button
+      bulkVerifyBtn.disabled = false;
+      bulkVerifyBtn.classList.remove('btn-loading');
+      bulkVerifyBtn.innerHTML = originalText;
+      
+      if (result && result.success) {
+        console.log('✅ Verification successful');
+        showMessage(`Bulk verification completed: ${result.successCount} verified, ${result.errorCount} errors`, 'success');
+        showToast('Verification Complete', `${result.successCount} students verified successfully`, 'success');
+        
+        // Clear selection and refresh data
+        clearSelection();
+        setTimeout(() => {
+          console.log('🔄 Refreshing data after successful verification...');
+          loadStudentsWithSessionPreservation(currentEmail).then(() => {
+            // Check if completion modal should be shown
+            checkAndShowCompletionModal();
+          });
+        }, 1000);
+      } else {
+        console.error('❌ Server returned failure:', result);
+        const errorMsg = result?.message || 'Unknown server error occurred';
+        showMessage('Verification failed: ' + errorMsg, 'danger');
+        showToast('Verification Failed', errorMsg, 'error');
+      }
+    })
+    .withFailureHandler(function(error) {
+      console.error('🚨 Server call failed:', error);
+      
+      // Restore button
+      bulkVerifyBtn.disabled = false;
+      bulkVerifyBtn.classList.remove('btn-loading');
+      bulkVerifyBtn.innerHTML = originalText;
+      
+      const errorMessage = error.message || error.toString();
+      showMessage('Error verifying marks: ' + errorMessage, 'danger');
+      showToast('System Error', 'Verification failed due to system error', 'error');
+      
+      // If it's an email-related error, reset session
+      if (errorMessage.toLowerCase().includes('email') || errorMessage.toLowerCase().includes('parameter')) {
+        console.log('📧 Email-related error detected, resetting session...');
+        setTimeout(() => {
+          resetToLogin();
+        }, 2000);
+      }
+    })
+    .bulkVerifyMarks(currentEmail.trim(), studentsWithMarks);
+    
+  console.log('📤 Server call initiated with parameters:', {
+    email: currentEmail.trim(),
+    studentsCount: studentsWithMarks.length,
+    students: studentsWithMarks
+  });
+}
+
+    // ===== COMPLETION MODAL MANAGEMENT FUNCTIONS =====
+    function checkCompletionEligibility() {
+      if (!session.isValid() || session.currentStudents.length === 0) {
+        return { eligible: false, reason: "No students data" };
+      }
+      
+      const totalStudents = session.currentStudents.length;
+      const studentsWithMarks = session.currentStudents.filter(s => {
+        const input = document.getElementById('marks_' + s.regdNo);
+        return input && input.value && input.value.trim() !== '';
+      }).length;
+      
+      const studentsVerified = session.currentStudents.filter(s => s.verified === '✅').length;
+      
+      if (studentsWithMarks < totalStudents) {
+        return { 
+          eligible: false, 
+          reason: `${totalStudents - studentsWithMarks} students still need marks uploaded`,
+          progress: { totalStudents, studentsWithMarks, studentsVerified }
+        };
+      }
+      
+      return { 
+        eligible: true, 
+        reason: "All marks uploaded - ready for confirmation",
+        progress: { totalStudents, studentsWithMarks, studentsVerified }
+      };
+    }
+
+    function checkAndShowCompletionModal() {
+      const eligibility = checkCompletionEligibility();
+      
+      // Only show modal if eligible and user hasn't already confirmed
+      if (eligibility.eligible && !hasUserConfirmedCompletion()) {
+        showCompletionModal(eligibility.progress);
+      }
+    }
+
+    function hasUserConfirmedCompletion() {
+      // Check if user has already confirmed completion (to avoid showing modal repeatedly)
+      try {
+        const confirmedKey = `completion_confirmed_${session.getEmail()}`;
+        return sessionStorage.getItem(confirmedKey) === 'true';
+      } catch (error) {
+        return false; // Fallback to showing modal if sessionStorage unavailable
+      }
+    }
+
+    function markCompletionAsConfirmed() {
+      try {
+        const confirmedKey = `completion_confirmed_${session.getEmail()}`;
+        sessionStorage.setItem(confirmedKey, 'true');
+      } catch (error) {
+        console.warn('Could not mark completion as confirmed in sessionStorage');
+      }
+    }
+
+    function showCompletionModal(progress) {
+      const { totalStudents, studentsWithMarks, studentsVerified } = progress;
+      
+      const completionMessage = `
+        <div style="text-align: center; padding: 20px;">
+          <div style="font-size: 48px; margin-bottom: 16px;">🎉</div>
+          <h3 style="color: #28a745; margin-bottom: 20px;">Assessment Ready for Completion!</h3>
+          
+          <div style="background: #e8f5e8; padding: 16px; border-radius: 8px; margin: 16px 0;">
+            <p><strong>📊 Your Assessment Summary:</strong></p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; margin: 12px 0;">
+              <div style="text-align: center;">
+                <div style="font-size: 24px; font-weight: bold; color: #28a745;">${totalStudents}</div>
+                <div style="font-size: 12px; color: #666;">Total Students</div>
+              </div>
+              <div style="text-align: center;">
+                <div style="font-size: 24px; font-weight: bold; color: #28a745;">${studentsWithMarks}</div>
+                <div style="font-size: 12px; color: #666;">Marks Uploaded</div>
+              </div>
+              <div style="text-align: center;">
+                <div style="font-size: 24px; font-weight: bold; color: #28a745;">${studentsVerified}</div>
+                <div style="font-size: 12px; color: #666;">Verified</div>
+              </div>
+            </div>
+          </div>
+          
+          <p style="margin: 20px 0; font-size: 16px;">
+            🎯 <strong>All students have marks uploaded!</strong><br>
+            Would you like to confirm completion and stop deadline reminder notifications?
+          </p>
+          
+          <div style="background: #fff3cd; padding: 12px; border-radius: 6px; margin: 16px 0; font-size: 14px;">
+            <strong>Note:</strong> You can skip this for now and confirm completion later if needed.
+          </div>
+        </div>
+      `;
+      
+      // Update modal content and show
+      const modalOverlay = document.getElementById('modalOverlay');
+      const modal = modalOverlay.querySelector('.modal');
+      const modalTitle = document.getElementById('modalTitle');
+      const modalBody = document.getElementById('modalBody');
+      const modalIcon = document.getElementById('modalIcon');
+      const modalIconText = document.getElementById('modalIconText');
+      const modalConfirmBtn = document.getElementById('modalConfirmBtn');
+      
+      modalTitle.textContent = 'Assessment Completion';
+      modalBody.innerHTML = completionMessage;
+      modalIcon.className = 'modal-icon success';
+      modalIconText.textContent = '🎯';
+      modalConfirmBtn.textContent = 'Confirm Completion';
+      
+      // Add special styling for completion modal
+      modal.style.maxWidth = '600px';
+      modal.style.borderTop = '4px solid #28a745';
+      
+      // Set callback for confirmation
+      session.modalCallback = () => {
+        markCompletionAsConfirmed();
+        submitCompletionConfirmation();
+      };
+      
+      // Show cancel button
+      const cancelBtn = modalOverlay.querySelector('.btn-secondary');
+      cancelBtn.style.display = 'inline-flex';
+      cancelBtn.textContent = 'Maybe Later';
+      
+      modalOverlay.classList.add('show');
+      
+      console.log('✅ Completion modal displayed');
+    }
+
+    function confirmAssessmentCompletion() {
+      const eligibility = checkCompletionEligibility();
+      
+      if (!eligibility.eligible) {
+        showToast('Cannot Confirm', eligibility.reason, 'warning');
+        return;
+      }
+      
+      const { totalStudents, studentsWithMarks, studentsVerified } = eligibility.progress;
+      
+      const confirmMessage = `
+        <p><strong>🎯 Confirm Assessment Completion</strong></p>
+        <p>You are about to confirm that you have completed all assessment requirements.</p>
+        
+        <div style="background: #e8f5e8; padding: 16px; border-radius: 8px; margin: 16px 0;">
+          <p><strong>📊 Your Assessment Summary:</strong></p>
+          <ul style="margin: 8px 0; padding-left: 20px;">
+            <li>Total Students: <strong>${totalStudents}</strong></li>
+            <li>Marks Uploaded: <strong>${studentsWithMarks}</strong> ✅</li>
+            <li>Students Verified: <strong>${studentsVerified}</strong></li>
+          </ul>
+        </div>
+        
+        <p><strong>⚠️ Important:</strong></p>
+        <ul style="margin: 12px 0; padding-left: 20px; color: #666;">
+          <li>This confirms you have completed ALL assessment requirements</li>
+          <li>Deadline reminder notifications will stop</li>
+          <li>This action cannot be undone</li>
+          <li>Administrator will be notified of your completion</li>
+        </ul>
+        
+        <p style="color: #28a745; font-weight: 500;">✅ Only confirm if you are certain all assessments are complete.</p>
+      `;
+      
+      showModal(
+        'Confirm Assessment Completion',
+        confirmMessage,
+        'success',
+        'Confirm Completion',
+        true,
+        () => submitCompletionConfirmation()
+      );
+    }
+
+    // ===== ENHANCED COMPLETION CONFIRMATION WITH AUTO-LOGOUT =====
+    function submitCompletionConfirmation() {
+      if (!session.isValid()) {
+        showToast('Session Error', 'Session expired. Please login again.', 'error');
+        resetToLogin();
+        return;
+      }
+      
+      showLoading('Confirming completion...');
+      
+      const currentEmail = session.getEmail();
+      
+      google.script.run
+        .withSuccessHandler(function(result) {
+          hideLoading();
+          
+          if (result && result.success) {
+            showToast('Completion Confirmed', 'Assessment completion confirmed successfully!', 'success');
+            
+            const successMessage = `
+              <p><strong>🎉 Assessment Completion Confirmed!</strong></p>
+              <p>Thank you for completing all your assessment requirements.</p>
+              
+              <div style="background: #d4edda; padding: 16px; border-radius: 8px; margin: 16px 0;">
+                <p><strong>✅ Confirmation Details:</strong></p>
+                <ul style="margin: 8px 0; padding-left: 20px;">
+                  <li>Completion confirmed at: ${new Date().toLocaleString()}</li>
+                  <li>All deadline reminders will stop</li>
+                  <li>Administrator has been notified</li>
+                  <li>Assessment requirements fulfilled</li>
+                </ul>
+              </div>
+              
+              <div class="logout-countdown">
+                <div class="countdown-text">🔒 Automatic Logout Starting</div>
+                <div class="countdown-number" id="logoutCountdown">10</div>
+                <div class="countdown-text">You will be automatically logged out for security</div>
+              </div>
+              
+              <p><strong>📧 What happened:</strong></p>
+              <ul style="margin: 12px 0; padding-left: 20px; color: #666;">
+                <li>Confirmation email sent to your account</li>
+                <li>No more deadline reminder notifications</li>
+                <li>Your completion status is recorded</li>
+                <li>Results compilation can proceed</li>
+              </ul>
+              
+              <p style="color: #28a745; font-weight: 500;">Thank you for your timely completion of the assessment process!</p>
+            `;
+            
+            showModal(
+              'Assessment Completed Successfully',
+              successMessage,
+              'success',
+              'Logout Now',
+              false,
+              () => {
+                // Clear countdown if user clicks logout immediately
+                if (window.logoutCountdownInterval) {
+                  clearInterval(window.logoutCountdownInterval);
+                }
+                performAutoLogout();
+              }
+            );
+            
+            // ✅ START AUTO-LOGOUT COUNTDOWN
+            startAutoLogoutCountdown();
+            
+          } else {
+            showToast('Confirmation Failed', result?.message || 'Failed to confirm completion', 'error');
+            showModal(
+              'Confirmation Failed',
+              `<p>Unable to confirm assessment completion.</p><p><strong>Error:</strong> ${result?.message || 'Unknown error'}</p><p>Please try again or contact support.</p>`,
+              'error',
+              'Close',
+              false,
+              null
+            );
+          }
+        })
+        .withFailureHandler(function(error) {
+          hideLoading();
+          const errorMessage = error.message || error.toString();
+          showToast('System Error', 'Failed to confirm completion', 'error');
+          
+          showModal(
+            'System Error',
+            `<p>A system error occurred while confirming completion.</p><p><strong>Error:</strong> ${errorMessage}</p><p>Please try again later or contact IT support.</p>`,
+            'error',
+            'Close',
+            false,
+            null
+          );
+        })
+        .confirmFacultyCompletion(currentEmail);
+    }
+
+    // ===== AUTO-LOGOUT COUNTDOWN FUNCTIONALITY =====
+    function startAutoLogoutCountdown() {
+      let countdown = 10;
+      const countdownElement = document.getElementById('logoutCountdown');
+      
+      // Clear any existing countdown
+      if (window.logoutCountdownInterval) {
+        clearInterval(window.logoutCountdownInterval);
+      }
+      
+      window.logoutCountdownInterval = setInterval(() => {
+        countdown--;
+        if (countdownElement) {
+          countdownElement.textContent = countdown;
+        }
+        
+        if (countdown <= 0) {
+          clearInterval(window.logoutCountdownInterval);
+          performAutoLogout();
+        }
+      }, 1000);
+      
+      console.log('✅ Auto-logout countdown started (10 seconds)');
+    }
+
+    function performAutoLogout() {
+      console.log('🔒 Performing automatic logout after assessment completion...');
+      
+      // Clear any running intervals
+      if (window.logoutCountdownInterval) {
+        clearInterval(window.logoutCountdownInterval);
+      }
+      
+      // Show logout message
+      showToast('Logging Out', 'Assessment completed. Logging out for security...', 'info', 3000);
+      
+      // Close any open modals
+      closeModal();
+      
+      // Mark completion as confirmed to prevent modal from showing again
+      markCompletionAsConfirmed();
+      
+      // Perform logout after a brief delay
+      setTimeout(() => {
+        // Additional confirmation toast
+        showToast('Logged Out', 'Thank you for completing your assessment. Goodbye!', 'success', 5000);
+        
+        // Reset to login screen
+        resetToLogin();
+        
+        console.log('✅ Auto-logout completed successfully');
+      }, 1000);
+    }
+
+    // ===== UTILITY FUNCTIONS =====
+    function getSelectedStudents() {
+      const checkboxes = document.querySelectorAll('.student-checkbox:checked');
+      return Array.from(checkboxes).map(cb => cb.value);
+    }
+    
+    function updateSaveAllButton() {
+      const saveAllBtn = document.getElementById('saveAllBtn');
+      if (!saveAllBtn) return;
+      
+      saveAllBtn.disabled = session.modifiedStudents.size === 0;
+      
+      if (session.modifiedStudents.size > 0) {
+        saveAllBtn.innerHTML = `💾 Save All Modified (${session.modifiedStudents.size})`;
+      } else {
+        saveAllBtn.innerHTML = '💾 Save All Modified';
+      }
+    }
+    
+    function selectAllWithMarks() {
+      console.log('🔍 selectAllWithMarks: Starting selection process...');
+      
+      // Debug: Check if session and students are available
+      if (!session || !session.currentStudents) {
+        console.error('❌ selectAllWithMarks: Session or students not available');
+        showToast('Selection Error', 'Student data not loaded. Please refresh the page.', 'error');
+        return;
+      }
+      
+      console.log(`📊 selectAllWithMarks: Found ${session.currentStudents.length} students in session`);
+      
+      const checkboxes = document.querySelectorAll('.student-checkbox:not(:disabled)');
+      console.log(`📋 selectAllWithMarks: Found ${checkboxes.length} enabled checkboxes`);
+      
+      if (checkboxes.length === 0) {
+        console.warn('⚠️ selectAllWithMarks: No enabled checkboxes found');
+        showToast('Selection Warning', 'No selectable students found. Students may be disabled due to pending requests.', 'warning');
+        return;
+      }
+      
+      let selectedCount = 0;
+      let eligibleCount = 0;
+      let debugInfo = [];
+      
+      checkboxes.forEach((checkbox, index) => {
+        const regdNo = checkbox.value;
+        const input = document.getElementById('marks_' + regdNo);
+        const student = session.currentStudents.find(s => s.regdNo === regdNo);
+        
+        // Enhanced debugging for each student
+        const debugEntry = {
+          index: index + 1,
+          regdNo: regdNo,
+          hasInput: !!input,
+          inputValue: input ? input.value : 'N/A',
+          hasStudent: !!student,
+          verified: student ? student.verified : 'N/A',
+          hasPendingRequest: student ? student.hasPendingRequest : 'N/A',
+          sessionPendingRequest: session.hasPendingRequest(regdNo),
+          eligible: false,
+          selected: false
+        };
+        
+        // Check if student is eligible for selection
+        if (input && input.value && input.value.trim() !== '' && 
+            student && student.verified !== '✅' && 
+            !student.hasPendingRequest && !session.hasPendingRequest(regdNo)) {
+          
+          eligibleCount++;
+          debugEntry.eligible = true;
+          
+          // Clear any previous selection state
+          checkbox.checked = false;
+          
+          // Set the checkbox as selected
+          checkbox.checked = true;
+          debugEntry.selected = true;
+          selectedCount++;
+          
+          console.log(`✅ selectAllWithMarks: Selected student ${regdNo} (${selectedCount}/${eligibleCount})`);
+        } else {
+          // Log why student wasn't selected
+          const reasons = [];
+          if (!input) reasons.push('no marks input found');
+          if (input && (!input.value || input.value.trim() === '')) reasons.push('no marks entered');
+          if (student && student.verified === '✅') reasons.push('already verified');
+          if (student && student.hasPendingRequest) reasons.push('has server pending request');
+          if (session.hasPendingRequest(regdNo)) reasons.push('has session pending request');
+          if (!student) reasons.push('student not found in session');
+          
+          console.log(`⏭️ selectAllWithMarks: Skipped ${regdNo} - ${reasons.join(', ')}`);
+        }
+        
+        debugInfo.push(debugEntry);
+      });
+      
+      // Enhanced result reporting
+      const message = `Selected ${selectedCount} students with marks ready for verification`;
+      console.log(`📊 selectAllWithMarks: Final results - Selected: ${selectedCount}, Eligible: ${eligibleCount}, Total checkboxes: ${checkboxes.length}`);
+      
+      // Show detailed debug info in console
+      console.table(debugInfo);
+      
+      if (selectedCount === 0) {
+        let noSelectionMessage = 'No students were selected. ';
+        if (eligibleCount === 0) {
+          noSelectionMessage += 'Possible reasons:\n• All students are already verified\n• No marks have been entered\n• All students have pending edit requests\n• Students are disabled';
+        } else {
+          noSelectionMessage += `${eligibleCount} students were eligible but selection failed.`;
+        }
+        
+        showToast('Selection Result', noSelectionMessage, 'warning', 5000);
+        showMessage(noSelectionMessage, 'warning');
+      } else {
+        showMessage(message, 'info');
+        showToast('Auto-Selection', message, 'success');
+      }
+      
+      // Force update of bulk buttons
+      updateBulkButtons();
+      
+      // Trigger change events to ensure UI is updated
+      checkboxes.forEach(checkbox => {
+        if (checkbox.checked) {
+          // Trigger change event manually to ensure all handlers are called
+          const event = new Event('change', { bubbles: true });
+          checkbox.dispatchEvent(event);
+        }
+      });
+      
+      console.log('✅ selectAllWithMarks: Selection process completed');
+    }
+    
+    function selectAllVerified() {
+      console.log('🔍 selectAllVerified: Starting verified selection process...');
+      
+      // Debug: Check if session and students are available
+      if (!session || !session.currentStudents) {
+        console.error('❌ selectAllVerified: Session or students not available');
+        showToast('Selection Error', 'Student data not loaded. Please refresh the page.', 'error');
+        return;
+      }
+      
+      console.log(`📊 selectAllVerified: Found ${session.currentStudents.length} students in session`);
+      
+      const checkboxes = document.querySelectorAll('.student-checkbox:not(:disabled)');
+      console.log(`📋 selectAllVerified: Found ${checkboxes.length} enabled checkboxes`);
+      
+      if (checkboxes.length === 0) {
+        console.warn('⚠️ selectAllVerified: No enabled checkboxes found');
+        showToast('Selection Warning', 'No selectable students found. Students may be disabled due to pending requests.', 'warning');
+        return;
+      }
+      
+      let selectedCount = 0;
+      let verifiedCount = 0;
+      let debugInfo = [];
+      
+      checkboxes.forEach((checkbox, index) => {
+        const regdNo = checkbox.value;
+        const student = session.currentStudents.find(s => s.regdNo === regdNo);
+        
+        // Enhanced debugging for each student
+        const debugEntry = {
+          index: index + 1,
+          regdNo: regdNo,
+          hasStudent: !!student,
+          verified: student ? student.verified : 'N/A',
+          hasPendingRequest: student ? student.hasPendingRequest : 'N/A',
+          sessionPendingRequest: session.hasPendingRequest(regdNo),
+          eligible: false,
+          selected: false
+        };
+        
+        // Check if student is eligible for edit request
+        if (student && student.verified === '✅' && 
+            !student.hasPendingRequest && !session.hasPendingRequest(regdNo)) {
+          
+          verifiedCount++;
+          debugEntry.eligible = true;
+          
+          // Clear any previous selection state
+          checkbox.checked = false;
+          
+          // Set the checkbox as selected
+          checkbox.checked = true;
+          debugEntry.selected = true;
+          selectedCount++;
+          
+          console.log(`✅ selectAllVerified: Selected verified student ${regdNo} (${selectedCount}/${verifiedCount})`);
+        } else {
+          // Log why student wasn't selected
+          const reasons = [];
+          if (!student) reasons.push('student not found in session');
+          if (student && student.verified !== '✅') reasons.push('not verified');
+          if (student && student.hasPendingRequest) reasons.push('has server pending request');
+          if (session.hasPendingRequest(regdNo)) reasons.push('has session pending request');
+          
+          console.log(`⏭️ selectAllVerified: Skipped ${regdNo} - ${reasons.join(', ')}`);
+        }
+        
+        debugInfo.push(debugEntry);
+      });
+      
+      // Enhanced result reporting
+      const message = `Selected ${selectedCount} verified students (eligible for edit requests)`;
+      console.log(`📊 selectAllVerified: Final results - Selected: ${selectedCount}, Verified eligible: ${verifiedCount}, Total checkboxes: ${checkboxes.length}`);
+      
+      // Show detailed debug info in console
+      console.table(debugInfo);
+      
+      if (selectedCount === 0) {
+        let noSelectionMessage = 'No verified students were selected. ';
+        if (verifiedCount === 0) {
+          noSelectionMessage += 'Possible reasons:\n• No students are verified yet\n• All verified students have pending edit requests\n• All verified students are disabled';
+        } else {
+          noSelectionMessage += `${verifiedCount} verified students were eligible but selection failed.`;
+        }
+        
+        showToast('Selection Result', noSelectionMessage, 'warning', 5000);
+        showMessage(noSelectionMessage, 'warning');
+      } else {
+        showMessage(message, 'info');
+        showToast('Auto-Selection', message, 'success');
+      }
+      
+      // Force update of bulk buttons
+      updateBulkButtons();
+      
+      // Trigger change events to ensure UI is updated
+      checkboxes.forEach(checkbox => {
+        if (checkbox.checked) {
+          // Trigger change event manually to ensure all handlers are called
+          const event = new Event('change', { bubbles: true });
+          checkbox.dispatchEvent(event);
+        }
+      });
+      
+      console.log('✅ selectAllVerified: Selection process completed');
+    }
+    
+    function clearSelection() {
+      console.log('🔄 clearSelection: Starting selection clearing...');
+      
+      const checkboxes = document.querySelectorAll('.student-checkbox');
+      console.log(`📋 clearSelection: Found ${checkboxes.length} total checkboxes`);
+      
+      let clearedCount = 0;
+      
+      checkboxes.forEach((checkbox, index) => {
+        if (checkbox.checked) {
+          checkbox.checked = false;
+          clearedCount++;
+          
+          // Trigger change event manually
+          const event = new Event('change', { bubbles: true });
+          checkbox.dispatchEvent(event);
+        }
+      });
+      
+      console.log(`✅ clearSelection: Cleared ${clearedCount} checkboxes`);
+      
+      const message = `Selection cleared (${clearedCount} students)`;
+      showMessage(message, 'info');
+      showToast('Selection Cleared', message, 'info');
+      
+      // Force update of bulk buttons
+      updateBulkButtons();
+      
+      console.log('✅ clearSelection: Clearing process completed');
+    }
+
+    function clearSelectionForPendingRequests() {
+      const checkboxes = document.querySelectorAll('.student-checkbox');
+      let clearedCount = 0;
+      
+      checkboxes.forEach(checkbox => {
+        const regdNo = checkbox.value;
+        const student = session.currentStudents.find(s => s.regdNo === regdNo);
+        const hasServerPending = student && student.hasPendingRequest;
+        const hasSessionPending = session.hasPendingRequest(regdNo);
+        
+        if (hasServerPending || hasSessionPending) {
+          if (checkbox.checked) {
+            checkbox.checked = false;
+            clearedCount++;
+            console.log(`Auto-cleared selection for student ${regdNo} with pending request`);
+          }
+          checkbox.disabled = true;
+        } else {
+          checkbox.disabled = false;
+        }
+      });
+      
+      if (clearedCount > 0) {
+        showToast('Selection Updated', `Cleared ${clearedCount} students with pending requests`, 'info', 3000);
+        updateBulkButtons();
+      }
+    }
+
+    function updateWorkflowHighlight() {
+      const workflowElement = document.querySelector('.workflow-highlight');
+      if (!workflowElement) return;
+      
+      const pendingCount = session.currentStudents.filter(s => s.hasPendingRequest || session.hasPendingRequest(s.regdNo)).length;
+      const unlockedCount = session.currentStudents.filter(s => s.isUnlocked || s.isInEditMode).length;
+      const verifiedCount = session.currentStudents.filter(s => s.verified === '✅').length;
+      
+      let updatedWorkflow = `
+        <h4>System Workflow:</h4>
+        <div class="workflow-step">
+          <div class="workflow-step-number">1</div>
+          Review student details and enter marks (0-max marks per student)
+        </div>
+        <div class="workflow-step">
+          <div class="workflow-step-number">2</div>
+          Watch status change: "Enter Marks" → "Getting saved" → "Saved, Please verify"
+        </div>
+        <div class="workflow-step">
+          <div class="workflow-step-number">3</div>
+          Select students and use "Verify" to lock marks
+        </div>
+      `;
+      
+      if (verifiedCount > 0) {
+        updatedWorkflow += `
+          <div class="workflow-step">
+            <div class="workflow-step-number">4</div>
+            For verified students: Use "Request Edit Access" if changes needed
+          </div>
+        `;
+      }
+      
+      if (pendingCount > 0) {
+        updatedWorkflow += `
+          <div class="workflow-step pending-step">
+            <div class="workflow-step-number" style="background: #9c27b0;">📋</div>
+            <strong>${pendingCount} edit request(s) pending approval</strong> - Check email for updates
+          </div>
+        `;
+      }
+      
+      if (unlockedCount > 0) {
+        updatedWorkflow += `
+          <div class="workflow-step" style="background: #fff3cd; border-left: 4px solid #ffc107;">
+            <div class="workflow-step-number" style="background: #ffc107;">🔓</div>
+            <strong>${unlockedCount} student(s) unlocked</strong> - Edit within 48 hours of approval
+          </div>
+        `;
+      }
+      
+      workflowElement.innerHTML = updatedWorkflow;
+    }
+        
+    function showMessage(message, type = 'info') {
+      const statusDiv = document.getElementById('status-message');
+      statusDiv.innerHTML = message;
+      statusDiv.className = 'alert alert-' + type;
+      
+      if (type === 'success' || type === 'info') {
+        setTimeout(() => {
+          if (session.currentStudents.length > 0) {
+            updateStatusMessage();
+          }
+        }, 5000);
+      }
+    }
+
+    function updateStatusMessage(unverifiedCount, verifiedCount, unlockedCount, pendingRequestCount) {
+      if (arguments.length === 0) {
+        // Calculate from current students if no arguments provided
+        
+        unverifiedCount = session.currentStudents.filter(s => s.verified !== '✅').length;
+        verifiedCount = session.currentStudents.filter(s => s.verified === '✅' && !s.isUnlocked && !s.isInEditMode).length;
+        unlockedCount = session.currentStudents.filter(s => s.isUnlocked || s.isInEditMode).length;
+        pendingRequestCount = session.currentStudents.filter(s => s.hasPendingRequest || session.hasPendingRequest(s.regdNo)).length;
+      }
+      
+      let message = `📊 Assessment Status: ${session.currentStudents.length} students`;
+      if (unverifiedCount > 0) message += ` • ${unverifiedCount} pending verification`;
+      if (verifiedCount > 0) message += ` • ${verifiedCount} verified`;
+      if (unlockedCount > 0) message += ` • ${unlockedCount} unlocked for editing`;
+      if (pendingRequestCount > 0) message += ` • ${pendingRequestCount} edit requests pending`;
+      
+      showMessage(message, 'info');
+    }
+
+    // ===== EXAMINER INFO FUNCTIONS =====
+    function showExaminerInfoCard(students) {
+      const examinerInfoCard = document.getElementById('examinerInfoCard');
+      const examinerName = document.getElementById('examinerName');
+      const examinerEmail = document.getElementById('examinerEmail');
+      const studentsCount = document.getElementById('studentsCount');
+      const lastUpdated = document.getElementById('lastUpdated');
+      const paperCodeBadge = document.getElementById('paperCodeBadge');
+      const paperInfoGrid = document.getElementById('paperInfoGrid');
+      
+      if (students.length > 0) {
+        const firstStudent = students[0];
+        const examinerNameValue = firstStudent.examinerName || 'Not Assigned';
+        
+        const totalStudents = students.length;
+        const verifiedStudents = students.filter(s => s.verified === '✅').length;
+        const pendingStudents = students.filter(s => !s.verified || s.verified !== '✅').length;
+        const unlockedStudents = students.filter(s => s.isUnlocked || s.isInEditMode).length;
+        const pendingRequestStudents = students.filter(s => s.hasPendingRequest || session.hasPendingRequest(s.regdNo)).length;
+        
+        // Get unique values for all fields
+        const uniquePaperCodes = [...new Set(students.filter(s => s.paperCode).map(s => s.paperCode))];
+        const uniquePaperTitles = [...new Set(students.filter(s => s.paperTitle || s.title || s.subjectTitle).map(s => s.paperTitle || s.title || s.subjectTitle))];
+        const uniqueProgrammes = [...new Set(students.filter(s => s.programmeName).map(s => s.programmeName))];
+        const uniqueSemesters = [...new Set(students.filter(s => s.semester).map(s => s.semester))];
+        const uniqueExams = [...new Set(students.filter(s => s.exam).map(s => s.exam))];
+        const uniqueCredits = [...new Set(students.filter(s => s.credits).map(s => s.credits))];
+        const uniqueMaxMarks = [...new Set(students.filter(s => s.maxMarks).map(s => s.maxMarks))];
+        
+        examinerName.textContent = examinerNameValue;
+        examinerName.className = examinerNameValue === 'Not Assigned' ? 'info-value' : 'info-value highlight';
+        
+        examinerEmail.textContent = session.getEmail() || 'Not Available';
+        examinerEmail.className = 'info-value highlight';
+        
+        // Set programme name as subtitle
+        const programmeDisplay = uniqueProgrammes.length === 1 ? uniqueProgrammes[0] : 
+                                (uniqueProgrammes.length > 1 ? `${uniqueProgrammes.length} Different Programmes` : 'Programme Not Specified');
+        
+        // Find the examiner-details section and add programme info
+        const examinerDetails = document.querySelector('.examiner-details');
+        if (examinerDetails) {
+          // Check if programme subtitle already exists
+          let programmeSubtitle = examinerDetails.querySelector('.programme-subtitle');
+          if (!programmeSubtitle) {
+            // Create new subtitle element
+            programmeSubtitle = document.createElement('p');
+            programmeSubtitle.className = 'examiner-subtitle programme-subtitle';
+            programmeSubtitle.style.cssText = 'font-size: 14px; opacity: 0.9; margin: 4px 0 0 0; font-weight: 400;';
+            examinerDetails.appendChild(programmeSubtitle);
+          }
+          programmeSubtitle.textContent = programmeDisplay;
+        }
+        
+        // Handle paper info grid
+        if (uniquePaperCodes.length > 0 || uniquePaperTitles.length > 0 || 
+            uniqueSemesters.length > 0 || uniqueExams.length > 0 || 
+            uniqueCredits.length > 0 || uniqueMaxMarks.length > 0) {
+          
+          paperInfoGrid.innerHTML = `
+            <div class="paper-info-item">
+              <div class="paper-code-label">Paper Code</div>
+              <div class="paper-code-value">${uniquePaperCodes.length === 1 ? uniquePaperCodes[0] : (uniquePaperCodes.length > 1 ? 'Multiple Codes' : 'Not Specified')}</div>
+            </div>
+            <div class="paper-info-item">
+              <div class="paper-title-label">Paper Title</div>
+              <div class="paper-title-value">${uniquePaperTitles.length === 1 ? uniquePaperTitles[0] : (uniquePaperTitles.length > 1 ? 'Multiple Titles' : 'Not Specified')}</div>
+            </div>
+            <div class="paper-info-item">
+              <div class="paper-code-label">Semester</div>
+              <div class="paper-code-value">${uniqueSemesters.length === 1 ? uniqueSemesters[0] : (uniqueSemesters.length > 1 ? 'Multiple' : 'Not Specified')}</div>
+            </div>
+            <div class="paper-info-item">
+              <div class="paper-title-label">Exam</div>
+              <div class="paper-title-value">${uniqueExams.length === 1 ? uniqueExams[0] : (uniqueExams.length > 1 ? 'Multiple' : 'Not Specified')}</div>
+            </div>
+            <div class="paper-info-item">
+              <div class="paper-code-label">Credits</div>
+              <div class="paper-code-value">${uniqueCredits.length === 1 ? uniqueCredits[0] : (uniqueCredits.length > 1 ? 'Variable' : 'Not Specified')}</div>
+            </div>
+            <div class="paper-info-item">
+              <div class="paper-title-label">Max Marks</div>
+              <div class="paper-title-value">${uniqueMaxMarks.length === 1 ? uniqueMaxMarks[0] : (uniqueMaxMarks.length > 1 ? 'Variable' : '100')}</div>
+            </div>
+          `;
+          paperCodeBadge.style.display = 'block';
+        } else {
+          paperCodeBadge.style.display = 'none';
+        }
+        
+        studentsCount.innerHTML = `
+          <div><strong>${totalStudents}</strong> </div>
+          <div style="font-size: 12px; color: #6c757d; margin-top: 2px;">
+            ${verifiedStudents} Verified • ${pendingStudents} Pending
+            ${unlockedStudents > 0 ? ` • ${unlockedStudents} Unlocked` : ''}
+            ${pendingRequestStudents > 0 ? ` • ${pendingRequestStudents} Requests Pending` : ''}
+          </div>
+        `;
+        
+        lastUpdated.textContent = new Date().toLocaleString();
+        
+        examinerInfoCard.style.display = 'block';
+      }
+    }
+
+    function hideExaminerInfoCard() {
+      const examinerInfoCard = document.getElementById('examinerInfoCard');
+      if (examinerInfoCard) {
+        examinerInfoCard.style.display = 'none';
+      }
+    }
+
+    function showUnlockNotification(unlockedStudents) {
+      const unlockedCount = unlockedStudents.length;
+      const unlockedNames = unlockedStudents.map(s => `${s.regdNo} (${s.name})`).join(', ');
+      showMessage(`Edit access granted for ${unlockedCount} student(s): ${unlockedNames}. Access expires in 48 hours.`, 'warning');
+      
+      showToast('Edit Access Granted', `You have ${unlockedCount} students unlocked for editing`, 'info', 7000);
+      
+      const notificationBanner = document.getElementById('unlock-notification');
+      notificationBanner.classList.add('show');
+      
+      setTimeout(() => {
+        notificationBanner.classList.remove('show');
+      }, 10000);
+    }
+
+    // ===== SESSION RESET =====
+    function resetToLogin() {
+      console.log('resetToLogin: Starting session reset with cleanup...');
+      
+      session.reset();
+      hideExaminerInfoCard();
+      
+      const emailInput = document.getElementById('email');
+      const otpInput = document.getElementById('otp');
+      if (emailInput) emailInput.value = '';
+      if (otpInput) otpInput.value = '';
+      
+      document.getElementById('login').style.display = 'block';
+      document.getElementById('students-container').style.display = 'none';
+      
+      showToast('Session Reset', 'Please login again to continue', 'info');
+      console.log('resetToLogin: Session reset complete with state cleanup');
+    }
+
+    // ===== SMART AUTO-REFRESH SETUP =====
+    function setupSmartAutoRefresh() {
+      let lastActivity = Date.now();
+      let refreshInterval;
+      
+      ['click', 'keypress', 'input'].forEach(eventType => {
+        document.addEventListener(eventType, () => {
+          lastActivity = Date.now();
+        });
+      });
+      
+      function smartRefresh() {
+        const timeSinceActivity = Date.now() - lastActivity;
+        const minInactiveTime = 2 * 60 * 1000; // 2 minutes
+        
+        if (session.isValid() && 
+            document.getElementById('students-container').style.display !== 'none' &&
+            timeSinceActivity > minInactiveTime) {
+          
+          const currentEmail = session.getEmail();
+          if (currentEmail) {
+            console.log('🔄 Smart auto-refresh triggered after', Math.round(timeSinceActivity / 1000), 'seconds of inactivity');
+            loadStudentsWithSessionPreservation(currentEmail);
+          }
+        }
+      }
+      
+      if (refreshInterval) {
+        clearInterval(refreshInterval);
+      }
+      
+      refreshInterval = setInterval(smartRefresh, 5 * 60 * 1000);
+      return refreshInterval;
+    }
+
+    // ===== EVENT LISTENERS =====
+    document.addEventListener('DOMContentLoaded', function() {
+      initializeToastContainer();
+      
+      const emailInput = document.getElementById('email');
+      const otpInput = document.getElementById('otp');
+      
+      if (emailInput) {
+        emailInput.addEventListener('keypress', function(e) {
+          if (e.key === 'Enter') {
+            otpInput.focus();
+          }
+        });
+      }
+      
+      if (otpInput) {
+        otpInput.addEventListener('keypress', function(e) {
+          if (e.key === 'Enter') {
+            login();
+          }
+        });
+      }
+      
+      setupSmartAutoRefresh();
+      console.log('✅ Enhanced initialization completed with session management');
+    });
+    
+    document.addEventListener('click', function(e) {
+      const modalOverlay = document.getElementById('modalOverlay');
+      if (e.target === modalOverlay) {
+        closeModal();
+      }
+    });
+    
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeModal();
+      }
+    });
+    
+    window.addEventListener('beforeunload', function(e) {
+      if (session.modifiedStudents.size > 0) {
+        e.preventDefault();
+        e.returnValue = '';
+        return 'You have unsaved changes. Are you sure you want to leave?';
+      }
+    });
+
+    // ===== DEBUG FUNCTIONS =====
+    window.debugEnhancedSession = function() {
+      const debug = session.debug();
+      console.log('=== ENHANCED SESSION DEBUG ===');
+      console.table(debug);
+      
+      console.log('Session Pending Requests:', Array.from(session.confirmedPendingRequests));
+      console.log('Pending Request Tracker:', session.pendingRequestTracker);
+      
+      if (session.currentStudents.length > 0) {
+        const studentsWithPending = session.currentStudents.filter(s => 
+          s.hasPendingRequest || session.hasPendingRequest(s.regdNo)
+        );
+        console.log('Students with pending requests:', studentsWithPending.map(s => ({
+          regdNo: s.regdNo,
+          name: s.name,
+          serverPending: s.hasPendingRequest,
+          sessionPending: session.hasPendingRequest(s.regdNo)
+        })));
+      }
+      
+      return debug;
+    };
+    
+    window.forceRefresh = function() {
+      const currentEmail = session.getEmail();
+      if (currentEmail) {
+        loadStudentsWithSessionPreservation(currentEmail);
+      } else {
+        showToast('Error', 'No valid session. Please login first.', 'error');
+      }
+    };
+    
+    window.resetSession = function() {
+      resetToLogin();
+    };
+  </script>
+</body>
+</html>
